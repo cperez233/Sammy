@@ -53,3 +53,29 @@ export const BurstMark: React.FC<{
     />
   </svg>
 );
+
+/** Section headline voice: words rise from a clipped mask when scrolled into view. */
+export const HeadingWords: React.FC<{ text: string; className?: string; delay?: number }> = ({
+  text,
+  className = "",
+  delay = 0,
+}) => (
+  <>
+    {text.split(" ").map((w, i, arr) => (
+      <React.Fragment key={i}>
+        <span className="inline-block overflow-hidden align-bottom pb-[0.12em] -mb-[0.12em]">
+          <motion.span
+            className={`inline-block ${className}`}
+            initial={{ y: "110%", rotate: 4 }}
+            whileInView={{ y: "0%", rotate: 0 }}
+            viewport={{ once: true, margin: "0px 0px -8% 0px" }}
+            transition={{ duration: 0.85, delay: delay + i * 0.05, ease }}
+          >
+            {w}
+          </motion.span>
+        </span>
+        {i < arr.length - 1 ? " " : null}
+      </React.Fragment>
+    ))}
+  </>
+);

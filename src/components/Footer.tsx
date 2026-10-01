@@ -1,10 +1,11 @@
 /* editorial-ui · Cristian Pérez · cristianperez.me */
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { MessageCircle, Phone, MapPin } from "lucide-react";
-import { BurstMark, Reveal } from "./Reveal";
+import { BurstMark, Reveal, HeadingWords } from "./Reveal";
+import { CtaButton } from "./CtaButton";
 import { invisibleSignature } from "../utils/signature";
-import { DEFAULT_WA, INSTAGRAM_URL, PHONE_DISPLAY, WHATSAPP_NUMBER, springSnappy } from "../lib/site";
+import { DEFAULT_WA, INSTAGRAM_URL, PHONE_DISPLAY, WHATSAPP_NUMBER } from "../lib/site";
 
 const InstagramIcon: React.FC<{ className?: string }> = ({ className = "w-5 h-5" }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">
@@ -14,40 +15,51 @@ const InstagramIcon: React.FC<{ className?: string }> = ({ className = "w-5 h-5"
   </svg>
 );
 
+/** Footer wordmark rising from the bottom edge (motion-patterns 31). */
+const RisingWordmark: React.FC = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end end"] });
+  const y = useTransform(scrollYProgress, [0, 1], ["45%", "6%"]);
+  return (
+    <div ref={ref} aria-hidden="true" className="relative mt-6 overflow-hidden h-[0.78em] text-[11.4vw] xl:text-[11rem] leading-none select-none">
+      <motion.p
+        style={{ y }}
+        className="font-display font-extrabold tracking-[-0.05em] whitespace-nowrap text-center text-canvas/[0.07]"
+      >
+        Sammy <span className="text-accent/45">Partyboom</span>
+      </motion.p>
+    </div>
+  );
+};
+
 export const Footer: React.FC = () => (
-  <footer className="relative -mt-8 rounded-t-[36px] bg-ink text-canvas pt-16 sm:pt-24 pb-28 lg:pb-12 px-4 sm:px-6 overflow-hidden">
+  <footer className="relative -mt-8 rounded-t-[36px] sm:rounded-t-[48px] bg-ink text-canvas pt-16 sm:pt-24 pb-24 lg:pb-0 px-4 sm:px-6 overflow-hidden">
     <div className="max-w-6xl mx-auto">
       {/* Closing call */}
       <div className="grid gap-10 lg:grid-cols-[1fr_auto] items-center pb-14 sm:pb-20 border-b border-canvas/15">
         <Reveal>
           <h2 className="font-display font-extrabold text-[clamp(2.5rem,8vw,5rem)] leading-[0.98] tracking-[-0.035em]">
-            ¿Hacemos <span className="text-accent">BOOM</span>
+            <HeadingWords text="¿Hacemos" /> <HeadingWords text="BOOM" className="text-accent" delay={0.1} />
             <br />
-            en tu fiesta?
+            <HeadingWords text="en tu fiesta?" delay={0.2} />
           </h2>
           <p className="mt-5 text-[17px] text-canvas/70 max-w-[30rem]">
             Escríbenos con la fecha y el lugar. Te respondemos por WhatsApp con
             disponibilidad y valor.
           </p>
-          <motion.a
-            href={DEFAULT_WA}
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ y: -3 }}
-            whileTap={{ scale: 0.97 }}
-            transition={springSnappy}
-            className="mt-8 inline-flex items-center gap-2.5 h-14 px-7 rounded-full bg-accent text-white font-display font-bold text-[17px] border-[3px] border-canvas shadow-[4px_4px_0_0_#FBF6EE] hover:bg-accent-hover transition-colors"
-          >
-            <MessageCircle className="w-5 h-5 fill-white" aria-hidden="true" />
-            Escribir al {PHONE_DISPLAY}
-          </motion.a>
+          <div className="mt-8">
+            <CtaButton href={DEFAULT_WA} external tone="light">
+              <MessageCircle className="w-5 h-5 fill-white" aria-hidden="true" />
+              Escribir al {PHONE_DISPLAY}
+            </CtaButton>
+          </div>
         </Reveal>
 
         <div aria-hidden="true" className="relative mx-auto w-[220px] h-[220px] sm:w-[260px] sm:h-[260px] grid place-items-center">
           <span className="absolute inset-0 anim-spin-slow">
             <BurstMark className="w-full h-full" fill="#FFC93C" stroke="#FFC93C" />
           </span>
-          <img src="/images/logo-sammy.webp" alt="" loading="lazy" className="relative w-[64%] h-[64%] rounded-full ring-4 ring-ink" />
+          <img src="/images/logo-sammy.webp" alt="" loading="lazy" width={170} height={170} className="relative w-[64%] h-[64%] rounded-full ring-4 ring-ink" />
         </div>
       </div>
 
@@ -65,7 +77,7 @@ export const Footer: React.FC = () => (
           <h3 className="text-[15px] font-semibold text-canvas/60 mb-2">Contacto</h3>
           <ul className="text-[16px]">
             <li>
-              <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 min-h-[44px] hover:text-festive-yellow transition-colors">
+              <a href={DEFAULT_WA} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 min-h-[44px] hover:text-festive-yellow transition-colors">
                 <MessageCircle className="w-5 h-5 text-wa" aria-hidden="true" /> WhatsApp {PHONE_DISPLAY}
               </a>
             </li>
@@ -106,5 +118,6 @@ export const Footer: React.FC = () => (
         </p>
       </div>
     </div>
+    <RisingWordmark />
   </footer>
 );

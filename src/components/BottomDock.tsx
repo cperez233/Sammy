@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { MessageCircle } from "lucide-react";
+import { BurstMark } from "./Reveal";
 import { DEFAULT_WA, springSnappy } from "../lib/site";
 
 const LINKS = [
@@ -10,9 +11,10 @@ const LINKS = [
   { href: "#cotizar", label: "Cotizar" },
 ];
 
-/** Phone-only dock: appears after the hero, hides over the footer. */
+/** Phone-only dock: appears after the hero, hides over the footer, marks where you are. */
 export const BottomDock: React.FC = () => {
   const [visible, setVisible] = useState(false);
+  const [active, setActive] = useState<string | null>(null);
 
   useEffect(() => {
     const onScroll = () => {
@@ -22,7 +24,21 @@ export const BottomDock: React.FC = () => {
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+
+    const io = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          const id = `#${e.target.id}`;
+          setActive(LINKS.some((l) => l.href === id) ? id : null);
+        }),
+      { rootMargin: "-45% 0px -50% 0px" }
+    );
+    document.querySelectorAll("main > section[id]").forEach((s) => io.observe(s));
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      io.disconnect();
+    };
   }, []);
 
   return (
@@ -37,15 +53,38 @@ export const BottomDock: React.FC = () => {
           className="lg:hidden fixed inset-x-0 bottom-0 z-50 px-3 pb-[max(12px,env(safe-area-inset-bottom))] pointer-events-none"
         >
           <div className="pointer-events-auto mx-auto max-w-md flex items-center gap-1 p-1.5 rounded-full bg-canvas/95 backdrop-blur-md border-[3px] border-ink shadow-floating">
-            {LINKS.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                className="flex-1 grid place-items-center h-11 rounded-full text-[15px] font-semibold text-ink hover:bg-ink/5 active:bg-ink/10 transition-colors"
-              >
-                {l.label}
-              </a>
-            ))}
+            {LINKS.map((l) => {
+              const on = active === l.href;
+              return (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  aria-current={on ? "true" : undefined}
+                  className={`relative flex-1 grid place-items-center h-11 rounded-full text-[15px] font-semibold transition-colors ${
+                    on ? "text-canvas" : "text-ink active:bg-ink/10"
+                  }`}
+                >
+                  {on && (
+                    <motion.span
+                      layoutId="dock-active"
+                      transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
+                      className="absolute inset-0 rounded-full bg-ink"
+                    >
+                      <BurstMark className="absolute -top-2 -right-1 w-4 h-4" />
+                    </motion.span>
+                  )}
+                  <motion.span
+                    key={on ? "on" : "off"}
+                    initial={on ? { y: -4 } : false}
+                    animate={{ y: 0 }}
+                    transition={{ type: "spring", stiffness: 500, damping: 12 }}
+                    className="relative"
+                  >
+                    {l.label}
+                  </motion.span>
+                </a>
+              );
+            })}
             <motion.a
               href={DEFAULT_WA}
               target="_blank"

@@ -74,9 +74,9 @@ Abre en tu navegador la URL local indicada (usualmente `http://localhost:5173`).
 
 ### Compilar para Producción
 ```bash
-npm run build
+SITE_URL=https://tu-dominio.com npm run build
 ```
-Genera la carpeta optimizada `dist/`.
+Genera `dist/` con la página prerenderizada (el contenido va en el HTML para Google y buscadores con IA), `robots.txt`, `sitemap.xml`, `llms.txt` y `404.html`. Sin `SITE_URL` usa un dominio de relleno (`sammypartyboom.example`) que hay que cambiar antes de publicar; en Vercel se toma solo de `VERCEL_PROJECT_PRODUCTION_URL`.
 
 ### Probar la Versión de Producción
 ```bash

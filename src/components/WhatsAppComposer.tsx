@@ -2,7 +2,7 @@
 import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { CheckCheck, Send } from "lucide-react";
-import { Reveal, SectionLabel } from "./Reveal";
+import { Reveal, SectionLabel, HeadingWords } from "./Reveal";
 import { PACKAGES } from "./Packages";
 import { PHONE_DISPLAY, springSnappy, waLink } from "../lib/site";
 
@@ -43,15 +43,15 @@ export const WhatsAppComposer: React.FC = () => {
   return (
     <section
       id="cotizar"
-      className="relative -mt-8 rounded-t-[36px] bg-uva-deep text-canvas shadow-sheet pt-16 sm:pt-24 pb-20 sm:pb-28 px-4 sm:px-6 overflow-hidden"
+      className="relative -mt-8 rounded-t-[36px] sm:rounded-t-[48px] bg-uva-deep text-canvas shadow-sheet pt-16 sm:pt-24 pb-20 sm:pb-28 px-4 sm:px-6 overflow-hidden"
     >
       <div aria-hidden="true" className="absolute inset-0 confetti-field opacity-60 pointer-events-none" />
       <div className="relative max-w-6xl mx-auto grid gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16 items-center">
         <div>
           <Reveal>
             <SectionLabel tone="light">Cotiza en un minuto</SectionLabel>
-            <h2 className="font-display font-extrabold text-[clamp(2.1rem,6vw,3.6rem)] leading-[1.02] tracking-[-0.03em]">
-              Arma tu mensaje y envíalo por WhatsApp
+            <h2 className="font-display font-extrabold text-[clamp(2.2rem,6vw,3.8rem)] leading-[1.02] tracking-[-0.03em]">
+              <HeadingWords text="Arma tu mensaje y envíalo por WhatsApp" />
             </h2>
             <p className="mt-4 text-[17px] text-canvas/75 leading-relaxed max-w-[34rem]">
               Elige lo básico y mira el mensaje antes de enviarlo. Te respondemos
@@ -149,10 +149,11 @@ export const WhatsAppComposer: React.FC = () => {
 
         {/* Phone with the live WhatsApp preview */}
         <Reveal delay={0.15} className="mx-auto w-full max-w-[380px]">
+          <div data-arrival className="rounded-[44px]">
           <div className="relative rounded-[44px] border-[3px] border-ink bg-ink p-2.5 shadow-[0_40px_80px_-30px_rgba(0,0,0,.7)] rotate-[1.5deg]">
             <div className="rounded-[34px] overflow-hidden bg-wa-chat">
               <div className="flex items-center gap-3 px-4 pt-5 pb-3 bg-wa-deep text-white">
-                <img src="/images/logo-sammy.webp" alt="" className="w-10 h-10 rounded-full bg-white" />
+                <img src="/images/logo-sammy.webp" alt="" width={40} height={40} className="w-10 h-10 rounded-full bg-white" />
                 <div className="leading-tight">
                   <p className="font-semibold text-[16px]">Sammy Partyboom</p>
                   <p className="text-[13px] text-white/75">{PHONE_DISPLAY}</p>
@@ -199,6 +200,7 @@ export const WhatsAppComposer: React.FC = () => {
           <p className="mt-5 text-center text-[14px] text-canvas/65">
             Se abre WhatsApp con el mensaje listo. Nada se envía sin que lo confirmes.
           </p>
+          </div>
         </Reveal>
       </div>
     </section>

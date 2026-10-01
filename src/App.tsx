@@ -5,6 +5,7 @@ import { Header } from "./components/Header";
 import { Hero } from "./components/Hero";
 import { Marquee } from "./components/Marquee";
 import { Showcase } from "./components/Showcase";
+import { Statement } from "./components/Statement";
 import { HowItGoes } from "./components/HowItGoes";
 import { Packages } from "./components/Packages";
 import { WhatsAppComposer } from "./components/WhatsAppComposer";
@@ -12,6 +13,7 @@ import { FaqSection } from "./components/FaqSection";
 import { Footer } from "./components/Footer";
 import { BottomDock } from "./components/BottomDock";
 import { initConsoleSignature } from "./utils/signature";
+import { scrollToSection } from "./lib/site";
 
 declare global {
   interface Window {
@@ -24,6 +26,22 @@ export const App: React.FC = () => {
     window.__hydrated = true;
     initConsoleSignature();
 
+    // F5 goes to the top; anchors scroll smoothly without staying in the URL
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    if (window.location.hash) {
+      history.replaceState(null, "", window.location.pathname + window.location.search);
+      window.scrollTo(0, 0);
+    }
+    const onClick = (e: MouseEvent) => {
+      const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[href^="#"]');
+      if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey) return;
+      const hash = a.getAttribute("href")!;
+      if (hash.length < 2) return;
+      e.preventDefault();
+      scrollToSection(hash);
+    };
+    document.addEventListener("click", onClick);
+
     // Rule 16: pause CSS loops in sections that are off-screen
     const observer = new IntersectionObserver(
       (entries) =>
@@ -31,7 +49,10 @@ export const App: React.FC = () => {
       { rootMargin: "100px 0px" }
     );
     document.querySelectorAll("main > section, footer").forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("click", onClick);
+    };
   }, []);
 
   return (
@@ -48,6 +69,7 @@ export const App: React.FC = () => {
           <Hero />
           <Marquee />
           <Showcase />
+          <Statement />
           <HowItGoes />
           <Packages />
           <WhatsAppComposer />

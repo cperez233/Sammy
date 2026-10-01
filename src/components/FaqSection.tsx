@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { MessageCircle } from "lucide-react";
-import { Reveal, SectionLabel, BurstMark } from "./Reveal";
+import { Reveal, SectionLabel, BurstMark, HeadingWords } from "./Reveal";
 import { PHONE_DISPLAY, ease, waLink } from "../lib/site";
 
 const FAQS = [
@@ -39,13 +39,13 @@ export const FaqSection: React.FC = () => {
   return (
     <section
       id="preguntas"
-      className="relative -mt-8 rounded-t-[36px] bg-canvas shadow-sheet pt-16 sm:pt-24 pb-20 sm:pb-28 px-4 sm:px-6"
+      className="relative -mt-8 rounded-t-[36px] sm:rounded-t-[48px] bg-canvas shadow-sheet pt-16 sm:pt-24 pb-20 sm:pb-28 px-4 sm:px-6"
     >
       <div className="max-w-6xl mx-auto grid gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
         <Reveal className="lg:sticky lg:top-28 self-start">
           <SectionLabel>Preguntas frecuentes</SectionLabel>
-          <h2 className="font-display font-extrabold text-[clamp(2.1rem,6vw,3.6rem)] leading-[1.02] tracking-[-0.03em]">
-            Lo que los papás preguntan antes de reservar
+          <h2 className="font-display font-extrabold text-[clamp(2.2rem,6vw,3.8rem)] leading-[1.02] tracking-[-0.03em]">
+            <HeadingWords text="Lo que los papás preguntan antes de reservar" />
           </h2>
           <a
             href={waLink("Hola Sammy Partyboom, tengo una pregunta sobre una fiesta.")}
@@ -65,7 +65,14 @@ export const FaqSection: React.FC = () => {
             {FAQS.map((f) => {
               const isOpen = open === f.id;
               return (
-                <li key={f.id} className="border-b border-ink/15">
+                <li key={f.id} className="relative border-b border-ink/15">
+                  <motion.span
+                    aria-hidden="true"
+                    initial={false}
+                    animate={{ scaleY: isOpen ? 1 : 0 }}
+                    transition={{ duration: 0.4, ease }}
+                    className="absolute -left-4 sm:-left-6 top-5 bottom-5 w-[4px] rounded-full bg-accent origin-top"
+                  />
                   <h3>
                     <button
                       type="button"
@@ -74,7 +81,7 @@ export const FaqSection: React.FC = () => {
                       onClick={() => setOpen(isOpen ? null : f.id)}
                       className="group w-full flex items-center justify-between gap-5 py-5 sm:py-6 text-left"
                     >
-                      <span className="font-display font-bold text-[19px] sm:text-[22px] leading-snug group-hover:text-accent transition-colors">
+                      <span className={`font-display font-bold text-[19px] sm:text-[22px] leading-snug group-hover:text-accent transition-colors ${isOpen ? "text-accent" : ""}`}>
                         {f.q}
                       </span>
                       <motion.span
@@ -89,7 +96,7 @@ export const FaqSection: React.FC = () => {
                   {/* Answer stays in the DOM; grid rows animate the height */}
                   <div
                     id={`faq-${f.id}`}
-                    className={`grid transition-[grid-template-rows] duration-400 ease-[cubic-bezier(.22,1,.36,1)] ${
+                    className={`grid transition-[grid-template-rows] duration-[400ms] ease-[cubic-bezier(.22,1,.36,1)] ${
                       isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
                     }`}
                   >

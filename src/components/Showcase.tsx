@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import { LoopVideo } from "./LoopVideo";
-import { Reveal, SectionLabel, BurstMark } from "./Reveal";
+import { Reveal, SectionLabel, BurstMark, HeadingWords } from "./Reveal";
 import { INSTAGRAM_URL, ease, springSnappy } from "../lib/site";
 
 type Item =
@@ -46,8 +46,8 @@ export const Showcase: React.FC = () => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-9 sm:mb-12">
         <Reveal>
           <SectionLabel>Fiestas reales, sin filtros</SectionLabel>
-          <h2 className="font-display font-extrabold text-[clamp(2.1rem,6vw,3.6rem)] leading-[1.02] tracking-[-0.03em] max-w-[16ch]">
-            Así se ve una fiesta con Sammy
+          <h2 className="font-display font-extrabold text-[clamp(2.2rem,6vw,3.8rem)] leading-[1.02] tracking-[-0.03em] max-w-[16ch]">
+            <HeadingWords text="Así se ve una fiesta con Sammy" />
           </h2>
           <p className="mt-4 text-[17px] text-ink-soft max-w-[36rem] leading-relaxed">
             Videos grabados en salones, casas y calles de Bucaramanga. Nada de
@@ -101,6 +101,8 @@ export const Showcase: React.FC = () => {
                     src={item.src}
                     alt={`Foto real: ${item.title}`}
                     loading="lazy"
+                    width={960}
+                    height={1280}
                     style={{ objectPosition: item.position }}
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                   />
