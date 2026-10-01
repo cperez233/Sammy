@@ -216,7 +216,7 @@ const Ticket: React.FC<{ pkg: PackageInfo; on: boolean; dir: number; onSwipe: (d
       </div>
 
       {/* Price stub, perforated like a ticket */}
-      <div className="relative md:w-[270px] bg-festive-yellow border-t-[3px] md:border-t-0 md:border-l-[3px] border-dashed border-ink p-6 sm:p-8 flex flex-col justify-between gap-6">
+      <div className="relative md:w-[310px] bg-festive-yellow border-t-[3px] md:border-t-0 md:border-l-[3px] border-dashed border-ink p-6 sm:p-8 flex flex-col justify-between gap-6">
         <span aria-hidden="true" className="hidden md:block absolute -left-[15px] -top-[15px] w-7 h-7 rounded-full bg-canvas border-[3px] border-ink" />
         <span aria-hidden="true" className="hidden md:block absolute -left-[15px] -bottom-[15px] w-7 h-7 rounded-full bg-canvas border-[3px] border-ink" />
         <BurstMark className="absolute right-4 top-4 w-10 h-10 opacity-90 anim-wiggle" fill="#FBF6EE" />

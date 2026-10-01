@@ -31,7 +31,36 @@ const ITEMS: Item[] = [
 const RATIO = { portrait: "aspect-[9/16]", landscape: "aspect-video", photo: "aspect-[3/4]" };
 const TAPES = ["bg-festive-yellow/90", "bg-festive-sky/85", "bg-accent/85", "bg-uva-light/90"];
 const TILTS = ["-rotate-[2.5deg]", "rotate-[2deg]", "-rotate-[1deg]", "rotate-[3deg]", "-rotate-[2deg]", "rotate-[1.5deg]", "-rotate-[3deg]"];
-const SPEEDS = [40, -30, 60, -10, 30, -45, 20];
+// Hand-balanced columns (indexes into ITEMS, -1 = Instagram card) so no column ends early.
+const LAYOUTS = {
+  2: [[0, 2, 3, 4], [1, 5, 6, -1]],
+  3: [[0, 4, 2], [1, 3, -1], [5, 6]],
+};
+// Each column drifts as a whole: cards never pull apart or overlap.
+const COLUMN_SPEEDS = [30, -30, 45];
+
+const useColumns = () => {
+  const [cols, setCols] = useState<2 | 3>(2);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const sync = () => setCols(mq.matches ? 3 : 2);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+  return cols;
+};
+
+const Column: React.FC<{ speed: number; children: React.ReactNode }> = ({ speed, children }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const y = useTransform(scrollYProgress, [0, 1], [speed, -speed]);
+  return (
+    <motion.div ref={ref} style={{ y }} className="flex-1 min-w-0 flex flex-col">
+      {children}
+    </motion.div>
+  );
+};
 
 const Media: React.FC<{ item: Item; className?: string; eager?: boolean }> = ({ item, className = "", eager }) =>
   item.kind === "video" ? (
@@ -49,46 +78,38 @@ const Media: React.FC<{ item: Item; className?: string; eager?: boolean }> = ({ 
     </div>
   );
 
-/** A polaroid pinned with tape, drifting at its own speed (layered parallax). */
-const Polaroid: React.FC<{ item: Item; i: number; onOpen: () => void }> = ({ item, i, onOpen }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], [SPEEDS[i % SPEEDS.length], -SPEEDS[i % SPEEDS.length]]);
-
-  return (
-    <div ref={ref} className="break-inside-avoid pb-8 sm:pb-10">
-      <motion.div style={{ y }}>
-        <motion.figure
-          initial={{ opacity: 0, y: 80, rotate: i % 2 ? 8 : -8 }}
-          whileInView={{ opacity: 1, y: 0, rotate: 0 }}
-          viewport={{ once: true, margin: "0px 0px -8% 0px" }}
-          transition={{ duration: 0.9, delay: (i % 3) * 0.08, ease }}
-          className="relative"
-        >
-          <button
-            type="button"
-            onClick={onOpen}
-            aria-label={`Ver en grande: ${item.title}`}
-            className={`group relative block w-full text-left bg-canvas text-ink rounded-[16px] p-2 sm:p-2.5 pb-3.5 shadow-[0_30px_60px_-24px_rgba(0,0,0,.75)] transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] hover:rotate-0 hover:-translate-y-2 hover:scale-[1.03] ${TILTS[i % TILTS.length]}`}
-          >
-            <span
-              aria-hidden="true"
-              className={`absolute -top-3 left-1/2 -translate-x-1/2 w-20 sm:w-24 h-6 sm:h-7 ${TAPES[i % TAPES.length]} ${i % 2 ? "rotate-[4deg]" : "-rotate-[5deg]"} shadow-sm [clip-path:polygon(3%_0,97%_4%,100%_50%,96%_100%,2%_96%,0_50%)] z-10`}
-            />
-            <Media item={item} className={`${RATIO[item.ratio]} rounded-[10px] bg-uva-deep`} />
-            <span className="absolute top-4 right-4 sm:top-5 sm:right-5 grid place-items-center w-9 h-9 rounded-full bg-canvas/95 text-ink opacity-0 scale-75 transition-all duration-300 group-hover:opacity-100 group-hover:scale-100 group-focus-visible:opacity-100">
-              <Maximize2 className="w-4 h-4" aria-hidden="true" />
-            </span>
-            <figcaption className="px-1.5 pt-3">
-              <span className="block text-[13px] sm:text-[14px] font-semibold text-accent">{item.tag}</span>
-              <span className="block font-display font-bold text-[16px] sm:text-[19px] leading-snug mt-0.5">{item.title}</span>
-            </figcaption>
-          </button>
-        </motion.figure>
-      </motion.div>
-    </div>
-  );
-};
+/** A polaroid pinned with tape. */
+const Polaroid: React.FC<{ item: Item; i: number; onOpen: () => void }> = ({ item, i, onOpen }) => (
+  <div className="pb-8 sm:pb-10">
+    <motion.figure
+      initial={{ opacity: 0, y: 80, rotate: i % 2 ? 8 : -8 }}
+      whileInView={{ opacity: 1, y: 0, rotate: 0 }}
+      viewport={{ once: true, margin: "0px 0px -8% 0px" }}
+      transition={{ duration: 0.9, delay: (i % 3) * 0.08, ease }}
+      className="relative"
+    >
+      <button
+        type="button"
+        onClick={onOpen}
+        aria-label={`Ver en grande: ${item.title}`}
+        className={`group relative block w-full text-left bg-canvas text-ink rounded-[16px] p-2 sm:p-2.5 pb-3.5 shadow-[0_30px_60px_-24px_rgba(0,0,0,.75)] transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] hover:rotate-0 hover:-translate-y-2 hover:scale-[1.03] ${TILTS[i % TILTS.length]}`}
+      >
+        <span
+          aria-hidden="true"
+          className={`absolute -top-3 left-1/2 -translate-x-1/2 w-20 sm:w-24 h-6 sm:h-7 ${TAPES[i % TAPES.length]} ${i % 2 ? "rotate-[4deg]" : "-rotate-[5deg]"} shadow-sm [clip-path:polygon(3%_0,97%_4%,100%_50%,96%_100%,2%_96%,0_50%)] z-10`}
+        />
+        <Media item={item} className={`${RATIO[item.ratio]} rounded-[10px] bg-uva-deep`} />
+        <span className="absolute top-4 right-4 sm:top-5 sm:right-5 grid place-items-center w-9 h-9 rounded-full bg-canvas/95 text-ink opacity-0 scale-75 transition-all duration-300 group-hover:opacity-100 group-hover:scale-100 group-focus-visible:opacity-100">
+          <Maximize2 className="w-4 h-4" aria-hidden="true" />
+        </span>
+        <figcaption className="px-1.5 pt-3">
+          <span className="block text-[13px] sm:text-[14px] font-semibold text-accent">{item.tag}</span>
+          <span className="block font-display font-bold text-[16px] sm:text-[19px] leading-snug mt-0.5">{item.title}</span>
+        </figcaption>
+      </button>
+    </motion.figure>
+  </div>
+);
 
 /** Full-size viewer: uncropped media, swipe/arrows/keys, and a way to book. */
 const Lightbox: React.FC<{ index: number; dir: number; onClose: () => void; onGo: (d: 1 | -1) => void }> = ({
@@ -219,6 +240,7 @@ export const Showcase: React.FC = () => {
     setOpen((o) => (o === null ? o : (o + d + ITEMS.length) % ITEMS.length));
   }, []);
   const close = useCallback(() => setOpen(null), []);
+  const cols = useColumns();
 
   return (
     <section id="fiestas" className="relative bg-ink text-canvas pt-10 sm:pt-16 pb-24 sm:pb-36 px-4 sm:px-6 overflow-x-clip">
@@ -241,43 +263,49 @@ export const Showcase: React.FC = () => {
           </Reveal>
         </div>
 
-        <div className="columns-2 lg:columns-3 gap-4 sm:gap-8">
-          {ITEMS.map((item, i) => (
-            <Polaroid
-              key={item.src}
-              item={item}
-              i={i}
-              onOpen={() => {
-                setDir(1);
-                setOpen(i);
-              }}
-            />
+        <div className="flex gap-4 sm:gap-8">
+          {LAYOUTS[cols].map((col, c) => (
+            <Column key={`${cols}-${c}`} speed={COLUMN_SPEEDS[c]}>
+              {col.map((i) =>
+                i === -1 ? (
+                  /* Door to Instagram, pinned like one more card */
+                  <div key="instagram" className="pb-8">
+                    <motion.a
+                      href={INSTAGRAM_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      initial={{ opacity: 0, y: 60, rotate: 6 }}
+                      whileInView={{ opacity: 1, y: 0, rotate: 2 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.9, ease }}
+                      whileHover={{ rotate: 0, y: -6 }}
+                      className="group relative block rounded-[16px] bg-accent text-white p-5 sm:p-7 border-[3px] border-canvas shadow-[0_30px_60px_-24px_rgba(0,0,0,.75)]"
+                    >
+                      <BurstMark className="w-12 h-12 sm:w-16 sm:h-16 transition-transform duration-500 group-hover:rotate-[72deg] group-hover:scale-110" />
+                      <p className="mt-6 text-[14px] sm:text-[15px] font-semibold text-white/85">Síguenos para ver más</p>
+                      <p className="font-display font-extrabold text-[15px] xs:text-[17px] sm:text-[30px] leading-[1.05] tracking-tight mt-1">
+                        @sammypartyboom
+                      </p>
+                      <span className="mt-4 inline-flex items-center gap-1.5 font-semibold text-[15px] sm:text-[16px]">
+                        Ver en Instagram
+                        <ArrowUpRight className="w-5 h-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
+                      </span>
+                    </motion.a>
+                  </div>
+                ) : (
+                  <Polaroid
+                    key={ITEMS[i].src}
+                    item={ITEMS[i]}
+                    i={i}
+                    onOpen={() => {
+                      setDir(1);
+                      setOpen(i);
+                    }}
+                  />
+                )
+              )}
+            </Column>
           ))}
-
-          {/* Door to Instagram, pinned like one more card */}
-          <div className="break-inside-avoid pb-8">
-            <motion.a
-              href={INSTAGRAM_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              initial={{ opacity: 0, y: 60, rotate: 6 }}
-              whileInView={{ opacity: 1, y: 0, rotate: 2 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.9, ease }}
-              whileHover={{ rotate: 0, y: -6 }}
-              className="group relative block rounded-[16px] bg-accent text-white p-5 sm:p-7 border-[3px] border-canvas shadow-[0_30px_60px_-24px_rgba(0,0,0,.75)]"
-            >
-              <BurstMark className="w-12 h-12 sm:w-16 sm:h-16 transition-transform duration-500 group-hover:rotate-[72deg] group-hover:scale-110" />
-              <p className="mt-6 text-[14px] sm:text-[15px] font-semibold text-white/85">Síguenos para ver más</p>
-              <p className="font-display font-extrabold text-[15px] xs:text-[17px] sm:text-[30px] leading-[1.05] tracking-tight mt-1">
-                @sammypartyboom
-              </p>
-              <span className="mt-4 inline-flex items-center gap-1.5 font-semibold text-[15px] sm:text-[16px]">
-                Ver en Instagram
-                <ArrowUpRight className="w-5 h-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
-              </span>
-            </motion.a>
-          </div>
         </div>
       </div>
 
