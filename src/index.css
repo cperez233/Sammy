@@ -1,0 +1,66 @@
+/* editorial-ui · Cristian Pérez · cristianperez.me · MIT */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --canvas: #FAF7F2;
+  --ink: #211526;
+  --ink-soft: #4E3E56;
+  --ink-muted: #75657D;
+  --accent: #E63956;
+  --accent-hover: #D12745;
+  --festive-yellow: #FFD166;
+  --festive-lavender: #E8DCF8;
+  --festive-teal: #06D6A0;
+}
+
+body {
+  background-color: var(--canvas);
+  color: var(--ink);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Reduced motion compliance (Rule 1 & Rule 8b) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .anim-float,
+  .anim-pulse-subtle {
+    animation: none !important;
+  }
+}
+
+/* Off-screen loop pausing (Rule 16) */
+.is-paused,
+.is-paused *,
+.is-offscreen,
+.is-offscreen * {
+  animation-play-state: paused !important;
+}
+
+/* Subtle float for brand motif */
+@keyframes floatGentle {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(2deg);
+  }
+}
+
+.anim-float {
+  animation: floatGentle 5s ease-in-out infinite;
+}
+
+/* Safe touch targets */
+.touch-target-44 {
+  min-height: 44px;
+  min-width: 44px;
+}
