@@ -29,7 +29,7 @@ const FAQS = [
   {
     id: "reserva",
     q: "¿Cómo se confirma la reserva?",
-    a: `Nos escribes por WhatsApp al ${PHONE_DISPLAY}, confirmamos disponibilidad de día y hora, y la fecha queda apartada con el abono que acordemos.`,
+    a: `Nos escribes por WhatsApp al ${PHONE_DISPLAY} (solo mensajes, no recibimos llamadas), confirmamos disponibilidad de día y hora, y la fecha queda apartada con el abono que acordemos.`,
   },
 ];
 

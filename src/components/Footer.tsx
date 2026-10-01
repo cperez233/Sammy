@@ -2,11 +2,11 @@
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { WhatsAppIcon } from "./WhatsAppIcon";
-import { Phone, MapPin } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { BurstMark, Reveal, HeadingWords } from "./Reveal";
 import { CtaButton } from "./CtaButton";
 import { invisibleSignature } from "../utils/signature";
-import { DEFAULT_WA, INSTAGRAM_URL, PHONE_DISPLAY, WHATSAPP_NUMBER } from "../lib/site";
+import { DEFAULT_WA, INSTAGRAM_URL, PHONE_DISPLAY } from "../lib/site";
 
 const InstagramIcon: React.FC<{ className?: string }> = ({ className = "w-5 h-5" }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">
@@ -20,9 +20,9 @@ const InstagramIcon: React.FC<{ className?: string }> = ({ className = "w-5 h-5"
 const RisingWordmark: React.FC = () => {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end end"] });
-  const y = useTransform(scrollYProgress, [0, 1], ["45%", "6%"]);
+  const y = useTransform(scrollYProgress, [0, 1], ["70%", "0%"]);
   return (
-    <div ref={ref} aria-hidden="true" className="relative mt-6 overflow-hidden h-[0.78em] text-[11.4vw] xl:text-[11rem] leading-none select-none">
+    <div ref={ref} aria-hidden="true" className="relative mt-6 overflow-hidden h-[1.12em] text-[min(9.4vw,9.5rem)] leading-[1.1] select-none">
       <motion.p
         style={{ y }}
         className="font-display font-extrabold tracking-[-0.05em] whitespace-nowrap text-center text-canvas/[0.07]"
@@ -79,12 +79,7 @@ export const Footer: React.FC = () => (
           <ul className="text-[16px]">
             <li>
               <a href={DEFAULT_WA} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 min-h-[44px] hover:text-festive-yellow transition-colors">
-                <WhatsAppIcon className="w-5 h-5 text-wa" /> WhatsApp {PHONE_DISPLAY}
-              </a>
-            </li>
-            <li>
-              <a href={`tel:+${WHATSAPP_NUMBER}`} className="flex items-center gap-3 min-h-[44px] hover:text-festive-yellow transition-colors">
-                <Phone className="w-5 h-5 text-festive-yellow" aria-hidden="true" /> Llamar al {PHONE_DISPLAY}
+                <WhatsAppIcon className="w-5 h-5 text-wa" /> WhatsApp {PHONE_DISPLAY} (solo mensajes)
               </a>
             </li>
             <li>

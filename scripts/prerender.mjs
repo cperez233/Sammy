@@ -30,7 +30,14 @@ const graph = {
       url: `${SITE}/`,
       logo: { "@type": "ImageObject", url: `${SITE}/images/logo-sammy.png`, width: 400, height: 400 },
       image: `${SITE}/og-image.jpg`,
-      telephone: "+57 316 867 4729",
+      // WhatsApp only (no calls), so no bare telephone that search would turn into a "Call" button.
+      contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "reservations",
+        url: "https://wa.me/573170629434",
+        availableLanguage: "es",
+        description: "Solo WhatsApp (mensajes), +57 317 062 9434",
+      },
       priceRange: "Desde $200.000 COP",
       currenciesAccepted: "COP",
       address: {
@@ -157,7 +164,7 @@ writeFileSync(
 - Plan más pedido: Animación + Sonido, 3 horas, desde $200.000 COP. Incluye 1 animador con micrófono, parlante bluetooth, juegos, rifas, concursos, pintucaritas y globoflexia.
 - Otros planes (a cotizar): Animación sin sonido, Animación + Decoración con globos, Paquete FULL.
 - No incluye: los premios y sorpresas para los concursos los pone el cliente.
-- Reservas: con 1 a 2 semanas de anticipación, por WhatsApp al +57 316 867 4729.
+- Reservas: con 1 a 2 semanas de anticipación, solo por WhatsApp (mensajes, no llamadas) al +57 317 062 9434: https://wa.me/573170629434
 - Instagram: https://www.instagram.com/sammypartyboom/
 
 ## Página

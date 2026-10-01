@@ -1,7 +1,7 @@
 /* editorial-ui · Cristian Pérez · cristianperez.me */
-export const WHATSAPP_NUMBER = "573168674729";
-export const PHONE_DISPLAY = "316 867 4729";
-export const PHONE_E164 = "+573168674729";
+export const WHATSAPP_NUMBER = "573170629434";
+export const PHONE_DISPLAY = "317 062 9434";
+export const PHONE_E164 = "+573170629434";
 export const INSTAGRAM_URL = "https://www.instagram.com/sammypartyboom/";
 export const TOWNS = ["Bucaramanga", "Floridablanca", "Girón", "Piedecuesta"];
 

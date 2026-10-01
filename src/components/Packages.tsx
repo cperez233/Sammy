@@ -1,8 +1,8 @@
 /* editorial-ui · Cristian Pérez · cristianperez.me */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { WhatsAppIcon } from "./WhatsAppIcon";
-import { Check, Clock, ArrowUpRight, Info } from "lucide-react";
+import { Check, Clock, ArrowUpRight, ArrowLeft, ArrowRight, Info } from "lucide-react";
 import { Reveal, SectionLabel, BurstMark, HeadingWords } from "./Reveal";
 import { CtaButton } from "./CtaButton";
 import { ease, waLink } from "../lib/site";
@@ -26,7 +26,7 @@ export const PACKAGES: PackageInfo[] = [
   {
     id: "animacion-sonido",
     name: "Animación + Sonido",
-    short: "Animación + Sonido",
+    short: "Con sonido",
     badge: "El más pedido",
     summary: "Recreación completa con música propia para que toda la fiesta juegue y baile.",
     duration: "3 horas",
@@ -58,14 +58,14 @@ export const PACKAGES: PackageInfo[] = [
       "Pintucaritas y globoflexia",
       "Momento de cantar y partir la torta",
     ],
-    notIncluded: "No incluye parlante ni música: el salón debe tener audio.",
+    notIncluded: "Parlante ni música: el salón debe tener su propio audio.",
     cta: "Consultar valor",
     message: "Hola Sammy Partyboom, quiero consultar el valor del plan Animación sin sonido.",
   },
   {
     id: "animacion-decoracion",
     name: "Animación + Decoración",
-    short: "+ Decoración",
+    short: "Con decoración",
     summary: "La recreación de siempre, con decoración de globos según la temática.",
     duration: "3 horas de animación",
     price: null,
@@ -83,7 +83,7 @@ export const PACKAGES: PackageInfo[] = [
   {
     id: "paquete-full",
     name: "Paquete FULL",
-    short: "FULL",
+    short: "Paquete FULL",
     badge: "Todo en uno",
     summary: "Animación, sonido propio y decoración para que no te preocupes por nada.",
     duration: "3 horas de show",
@@ -115,7 +115,7 @@ const PriceStamp: React.FC<{ idx: number }> = ({ idx }) => (
     whileInView={{ scale: 1, rotate: -12 }}
     viewport={{ once: true }}
     transition={{ type: "spring", stiffness: 200, damping: 12, delay: 0.3 }}
-    className="pointer-events-none absolute -top-16 -right-1 sm:-top-12 sm:-right-8 z-20 w-[84px] h-[84px] sm:w-[118px] sm:h-[118px]"
+    className="pointer-events-none absolute -top-9 -right-2 sm:-top-12 sm:-right-8 z-20 w-[72px] h-[72px] sm:w-[118px] sm:h-[118px]"
   >
     <motion.div key={idx} initial={{ rotate: -40, scale: 0.85 }} animate={{ rotate: 0, scale: 1 }} transition={{ type: "spring", stiffness: 260, damping: 12 }} className="w-full h-full">
       <svg viewBox="0 0 120 120" className="w-full h-full anim-spin-slow">
@@ -133,12 +133,14 @@ const PriceStamp: React.FC<{ idx: number }> = ({ idx }) => (
   </motion.div>
 );
 
-const Ticket: React.FC<{ pkg: PackageInfo; on: boolean; dir: number; onSwipe: (d: 1 | -1) => void }> = ({
-  pkg,
-  on,
-  dir,
-  onSwipe,
-}) => (
+/**
+ * Tickets live in one grid cell. The active one sits on top; the ones already
+ * seen wait in the pile on the left and the ones still to come in the pile on
+ * the right, so a ticket always leaves toward, and arrives from, its own pile.
+ */
+const Ticket: React.FC<{ pkg: PackageInfo; pos: number; onSwipe: (d: 1 | -1) => void }> = ({ pkg, pos, onSwipe }) => {
+  const on = pos === 0;
+  return (
   <motion.article
     id={`plan-${pkg.id}`}
     role="tabpanel"
@@ -147,10 +149,17 @@ const Ticket: React.FC<{ pkg: PackageInfo; on: boolean; dir: number; onSwipe: (d
     initial={false}
     animate={
       on
-        ? { opacity: 1, x: 0, rotate: 0, visibility: "visible" as const }
-        : { opacity: 0, x: dir * -60, rotate: dir * -2, transitionEnd: { visibility: "hidden" as const } }
+        ? { opacity: 1, x: 0, y: 0, rotate: 0, scale: 1, visibility: "visible" as const, transition: { duration: 0.55, delay: 0.06, ease } }
+        : {
+            opacity: 0,
+            x: pos * 56,
+            y: 14,
+            rotate: pos * 3,
+            scale: 0.93,
+            transition: { duration: 0.32, ease },
+            transitionEnd: { visibility: "hidden" as const },
+          }
     }
-    transition={{ duration: 0.45, ease }}
     drag={on ? "x" : false}
     dragConstraints={{ left: 0, right: 0 }}
     dragElastic={0.22}
@@ -158,7 +167,7 @@ const Ticket: React.FC<{ pkg: PackageInfo; on: boolean; dir: number; onSwipe: (d
       if (info.offset.x < -60) onSwipe(1);
       else if (info.offset.x > 60) onSwipe(-1);
     }}
-    className={`col-start-1 row-start-1 relative rounded-[30px] border-[3px] border-ink bg-white shadow-pop-lg overflow-hidden touch-pan-y ${
+    className={`col-start-1 row-start-1 relative rounded-[30px] border-[3px] border-ink bg-white shadow-pop-lg overflow-hidden touch-pan-y origin-bottom ${
       on ? "z-10" : "pointer-events-none"
     }`}
   >
@@ -239,15 +248,60 @@ const Ticket: React.FC<{ pkg: PackageInfo; on: boolean; dir: number; onSwipe: (d
       </div>
     </div>
   </motion.article>
-);
+  );
+};
+
+/** Sheets peeking from behind the active ticket: seen plans left, coming plans right. */
+const PILE = [
+  { side: -1, depth: 1, tone: "bg-festive-sky" },
+  { side: -1, depth: 2, tone: "bg-festive-yellow" },
+  { side: 1, depth: 1, tone: "bg-uva" },
+  { side: 1, depth: 2, tone: "bg-accent" },
+];
+
+const Pile: React.FC<{ idx: number }> = ({ idx }) => {
+  // Tall tickets on phones: a small tilt already swings the corners far, so keep the pile tight.
+  const [wide, setWide] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    const sync = () => setWide(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+  const k = wide ? 1 : 0.35;
+  return (
+  <>
+    {PILE.map(({ side, depth, tone }) => {
+      const count = side === 1 ? PACKAGES.length - 1 - idx : idx;
+      const shown = count >= depth;
+      return (
+        <motion.div
+          key={`${side}-${depth}`}
+          aria-hidden="true"
+          initial={false}
+          animate={{
+            opacity: shown ? 1 : 0,
+            x: shown ? side * (6 + depth * 8) * (wide ? 1 : 0.6) : 0,
+            y: 6 + depth * 6,
+            rotate: shown ? side * (0.8 + depth * 1.1) * k : 0,
+            scale: 1 - depth * 0.015,
+          }}
+          transition={{ type: "spring", stiffness: 200, damping: 20, delay: shown ? 0.05 * depth : 0 }}
+          style={{ zIndex: -depth }}
+          className={`absolute inset-0 rounded-[30px] border-[3px] border-ink ${tone}`}
+        />
+      );
+    })}
+  </>
+  );
+};
 
 export const Packages: React.FC = () => {
   const [idx, setIdx] = useState(0);
-  const [dir, setDir] = useState(1);
 
   const go = (next: number) => {
     if (next < 0 || next >= PACKAGES.length || next === idx) return;
-    setDir(next > idx ? 1 : -1);
     setIdx(next);
   };
 
@@ -274,7 +328,7 @@ export const Packages: React.FC = () => {
           <div
             role="tablist"
             aria-label="Planes"
-            className="no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0 flex lg:flex-col gap-2 overflow-x-auto lg:overflow-visible lg:sticky lg:top-28"
+            className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-1 gap-2 lg:sticky lg:top-28"
           >
             {PACKAGES.map((p, i) => {
               const on = i === idx;
@@ -286,8 +340,8 @@ export const Packages: React.FC = () => {
                   aria-selected={on}
                   aria-controls={`plan-${p.id}`}
                   onClick={() => go(i)}
-                  className={`group relative shrink-0 text-left rounded-2xl px-4 h-12 lg:h-auto lg:py-4 transition-colors ${
-                    on ? "text-canvas" : "text-ink hover:bg-festive-yellow/40"
+                  className={`group relative text-left rounded-2xl px-3.5 py-2.5 lg:px-4 lg:py-4 border-2 lg:border-0 transition-colors ${
+                    on ? "text-canvas border-ink" : "text-ink border-ink/15 bg-white/60 lg:bg-transparent hover:bg-festive-yellow/40"
                   }`}
                 >
                   {on && (
@@ -297,12 +351,12 @@ export const Packages: React.FC = () => {
                       className="absolute inset-0 rounded-2xl bg-ink shadow-[0_8px_18px_-8px_rgba(34,20,43,.6)]"
                     />
                   )}
-                  <span className="relative flex items-center justify-between gap-3 h-full">
-                    <span className="font-display font-bold text-[16px] lg:text-[18px] whitespace-nowrap">
+                  <span className="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-0.5 lg:gap-3 h-full">
+                    <span className="font-display font-bold text-[16px] lg:text-[18px] leading-tight">
                       <span className="lg:hidden">{p.short}</span>
                       <span className="hidden lg:inline">{p.name}</span>
                     </span>
-                    <span className={`hidden lg:inline whitespace-nowrap text-[14px] font-semibold ${on ? "text-festive-yellow" : "text-ink-muted"}`}>
+                    <span className={`whitespace-nowrap text-[14px] font-semibold ${on ? "text-festive-yellow" : "text-ink-muted"}`}>
                       {p.price ?? "A cotizar"}
                     </span>
                   </span>
@@ -312,36 +366,48 @@ export const Packages: React.FC = () => {
           </div>
 
           {/* All tickets live in the HTML, stacked in one cell; swipe on phones */}
-          <div className="relative">
-            {/* Layered deck: tickets waiting behind, peeking from the side they slide to */}
-            <motion.div
-              aria-hidden="true"
-              animate={{ rotate: idx % 2 ? 3.5 : 2.5, x: idx % 2 ? 22 : 16, y: 14 }}
-              transition={{ type: "spring", stiffness: 180, damping: 16 }}
-              className="absolute inset-0 rounded-[30px] bg-accent border-[3px] border-ink"
-            />
-            <motion.div
-              aria-hidden="true"
-              animate={{ rotate: idx % 2 ? -1.5 : 1.5, x: idx % 2 ? 10 : 8, y: 7 }}
-              transition={{ type: "spring", stiffness: 220, damping: 16 }}
-              className="absolute inset-0 rounded-[30px] bg-uva border-[3px] border-ink"
-            />
-            <PriceStamp idx={idx} />
-            <div className="relative grid">
-              {PACKAGES.map((p, i) => (
-                <Ticket key={p.id} pkg={p} on={i === idx} dir={dir} onSwipe={(d) => go(idx + d)} />
-              ))}
+          <div>
+            <div className="relative">
+              <div className="absolute inset-0 isolate">
+                <Pile idx={idx} />
+              </div>
+              <PriceStamp idx={idx} />
+              <div className="relative grid">
+                {PACKAGES.map((p, i) => (
+                  <Ticket key={p.id} pkg={p} pos={Math.sign(i - idx)} onSwipe={(d) => go(idx + d)} />
+                ))}
+              </div>
             </div>
-            <div className="lg:hidden mt-5 flex items-center justify-center gap-2" aria-hidden="true">
-              {PACKAGES.map((p, i) => (
-                <motion.span
-                  key={p.id}
-                  animate={{ width: i === idx ? 28 : 8, backgroundColor: i === idx ? "#E63956" : "rgba(34,20,43,.25)" }}
-                  transition={{ type: "spring", bounce: 0, duration: 0.35 }}
-                  className="h-2 rounded-full"
-                />
+            <div className="lg:hidden mt-7 flex items-center justify-between gap-3">
+              {([-1, 1] as const).map((d) => (
+                <button
+                  key={d}
+                  type="button"
+                  onClick={() => go(idx + d)}
+                  disabled={idx + d < 0 || idx + d >= PACKAGES.length}
+                  aria-label={d === -1 ? "Plan anterior" : "Plan siguiente"}
+                  className={`grid place-items-center w-12 h-12 rounded-full bg-white border-[3px] border-ink shadow-[3px_3px_0_0_#22142B] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-[transform,box-shadow,opacity] disabled:opacity-30 disabled:shadow-none ${
+                    d === -1 ? "order-first" : "order-last"
+                  }`}
+                >
+                  {d === -1 ? <ArrowLeft className="w-5 h-5" aria-hidden="true" /> : <ArrowRight className="w-5 h-5" aria-hidden="true" />}
+                </button>
               ))}
-              <span className="ml-3 text-[14px] text-ink-muted">Desliza para ver otro plan</span>
+              <div className="flex flex-col items-center gap-2" aria-hidden="true">
+                <div className="flex items-center gap-2">
+                  {PACKAGES.map((p, i) => (
+                    <motion.span
+                      key={p.id}
+                      animate={{ width: i === idx ? 28 : 8, backgroundColor: i === idx ? "#E63956" : "rgba(34,20,43,.25)" }}
+                      transition={{ type: "spring", bounce: 0, duration: 0.35 }}
+                      className="h-2 rounded-full"
+                    />
+                  ))}
+                </div>
+                <span className="text-[14px] text-ink-muted">
+                  Plan {idx + 1} de {PACKAGES.length} · desliza o usa las flechas
+                </span>
+              </div>
             </div>
           </div>
         </div>

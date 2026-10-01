@@ -9,14 +9,13 @@ import {
   useTransform,
 } from "framer-motion";
 import { WhatsAppIcon } from "./WhatsAppIcon";
-import { Phone, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { BurstMark } from "./Reveal";
 import { CtaButton } from "./CtaButton";
 import {
   DEFAULT_WA,
   INSTAGRAM_URL,
   PHONE_DISPLAY,
-  WHATSAPP_NUMBER,
   easeInOut,
   ease,
 } from "../lib/site";
@@ -284,8 +283,8 @@ export const Header: React.FC = () => {
                 Cotizar por WhatsApp
               </CtaButton>
               <div className="flex gap-3 text-[15px]">
-                <a href={`tel:+${WHATSAPP_NUMBER}`} className="flex-1 inline-flex items-center justify-center gap-2 h-12 rounded-full border-2 border-canvas/25">
-                  <Phone className="w-4 h-4" aria-hidden="true" /> {PHONE_DISPLAY}
+                <a href={DEFAULT_WA} target="_blank" rel="noopener noreferrer" className="flex-1 inline-flex items-center justify-center gap-2 h-12 rounded-full border-2 border-canvas/25">
+                  <WhatsAppIcon className="w-4 h-4" /> {PHONE_DISPLAY}
                 </a>
                 <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="flex-1 inline-flex items-center justify-center gap-1.5 h-12 rounded-full border-2 border-canvas/25">
                   Instagram <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
