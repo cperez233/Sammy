@@ -1,38 +1,24 @@
 /* editorial-ui · Cristian Pérez · cristianperez.me */
-import React from 'react';
-import { motion } from 'framer-motion';
-import { MessageCircle, ArrowDown, Sparkles } from 'lucide-react';
-import { BalloonBoom } from './BalloonBoom';
+import React, { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { ArrowDown, MessageCircle } from "lucide-react";
+import { BalloonBoom } from "./BalloonBoom";
+import { LoopVideo } from "./LoopVideo";
+import { DEFAULT_WA, ease, springSnappy } from "../lib/site";
 
-const ease = [0.22, 1, 0.36, 1] as const;
-
-function SplitWords({
-  text,
-  className = "",
-  delay = 0,
-}: {
-  text: string;
-  className?: string;
-  delay?: number;
-}) {
+function Words({ text, className = "", delay = 0 }: { text: string; className?: string; delay?: number }) {
   return (
     <>
       {text.split(" ").map((w, i) => (
-        <span
-          key={`${w}-${i}`}
-          className="inline-block overflow-hidden pb-[0.08em] align-bottom"
-        >
+        <span key={i} className="inline-block overflow-hidden align-bottom pb-[0.1em] -mb-[0.1em]">
           <motion.span
             className={`inline-block ${className}`}
-            initial={{ y: "105%" }}
+            initial={{ y: "110%" }}
             animate={{ y: "0%" }}
-            transition={{
-              duration: 0.8,
-              delay: delay + i * 0.04,
-              ease,
-            }}
+            transition={{ duration: 0.9, delay: delay + i * 0.055, ease }}
           >
-            {w}&nbsp;
+            {w}
+            {" "}
           </motion.span>
         </span>
       ))}
@@ -40,135 +26,170 @@ function SplitWords({
   );
 }
 
+const fade = (delay: number) => ({
+  initial: { opacity: 0, y: 18 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.8, delay, ease },
+});
+
 export const Hero: React.FC = () => {
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+  const frameY = useTransform(scrollYProgress, [0, 1], [0, 60]);
+  const backY = useTransform(scrollYProgress, [0, 1], [0, 20]);
+
   return (
-    <section className="relative pt-6 pb-12 sm:pt-12 sm:pb-20 px-4 sm:px-6 overflow-hidden">
-      <div className="max-w-4xl mx-auto flex flex-col items-center text-center">
-        {/* Eyebrow badge: Section label in text font, sentence case (SKILL.md rule 46 & step 2) */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease }}
-          className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-festive-lavender/60 border border-ink/5 text-ink text-sm sm:text-base font-semibold mb-5"
-        >
-          <span className="w-2 h-2 rounded-full bg-accent" />
-          <span>Fiestas y eventos infantiles en Bucaramanga</span>
-        </motion.div>
+    <section
+      id="inicio"
+      ref={ref}
+      className="grain relative overflow-x-clip pt-6 pb-16 sm:pt-10 lg:pt-14 lg:pb-24 px-4 sm:px-6"
+    >
+      {/* Ambient: one soft lavender halo behind the media */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -z-10 right-[-20%] top-[18%] w-[80vw] max-w-[760px] aspect-square rounded-full bg-uva-light blur-3xl opacity-80 lg:right-[-6%] lg:top-[4%]"
+      />
 
-        {/* Selected Headline: Opción 1 with Word-by-word reveal */}
-        <h1 className="font-display font-extrabold text-3xl sm:text-5xl md:text-6xl text-ink tracking-tight leading-[1.15] max-w-3xl mb-5">
-          <SplitWords text="Menos fiestas aburridas," />
-          <br className="hidden xs:inline" />
-          <SplitWords
-            text="más momentos que hacen BOOM."
-            className="text-accent"
-            delay={0.15}
+      <div className="max-w-6xl mx-auto grid gap-y-8 lg:gap-x-14 lg:grid-cols-[1.35fr_1fr] [grid-template-areas:'text''media''actions'] lg:[grid-template-areas:'text_media''actions_media']">
+        {/* Text */}
+        <div className="[grid-area:text] lg:self-end">
+          <motion.p {...fade(0)} className="text-[15px] sm:text-base font-semibold text-ink/85 mb-4 sm:mb-5">
+            Animación y recreación infantil en Bucaramanga
+          </motion.p>
+
+          <h1 className="font-display font-extrabold tracking-[-0.035em] leading-[0.98] text-[clamp(2.65rem,9.6vw,4.6rem)]">
+            <Words text="Menos fiestas aburridas," />{" "}
+            <Words text="más momentos que hacen" delay={0.2} />{" "}
+            <span className="relative inline-block whitespace-nowrap">
+              <Words text="BOOM." className="text-accent" delay={0.5} />
+              <motion.svg
+                aria-hidden="true"
+                viewBox="0 0 300 24"
+                preserveAspectRatio="none"
+                className="absolute left-0 -bottom-1 sm:-bottom-2 w-[92%] h-3 sm:h-4"
+              >
+                <motion.path
+                  d="M4 16C60 6 140 4 296 12"
+                  fill="none"
+                  stroke="#FFC93C"
+                  strokeWidth="8"
+                  strokeLinecap="round"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 0.8, delay: 1.0, ease }}
+                />
+              </motion.svg>
+            </span>
+          </h1>
+
+          <motion.p
+            {...fade(0.45)}
+            className="mt-6 sm:mt-7 text-[17px] sm:text-lg lg:text-xl leading-relaxed text-ink-soft max-w-[34rem]"
+          >
+            Un animador con micrófono y parlante, juegos de principio a fin,
+            pintucaritas y globoflexia. Los niños no se quedan sentados y tú
+            disfrutas la fiesta.
+          </motion.p>
+        </div>
+
+        {/* Media: real party video, layered */}
+        <div className="[grid-area:media] relative mx-auto w-full max-w-[420px] lg:max-w-[440px] lg:self-center pt-4 pb-10 lg:py-0">
+          <motion.div
+            style={{ y: backY }}
+            aria-hidden="true"
+            className="absolute inset-x-6 top-4 bottom-10 lg:inset-y-0 rounded-[32px] bg-festive-yellow rotate-[7deg] translate-x-2 border-[3px] border-ink"
           />
-        </h1>
+          <motion.div
+            style={{ y: backY }}
+            aria-hidden="true"
+            className="absolute inset-x-3 top-4 bottom-10 lg:inset-y-0 rounded-[32px] bg-uva -rotate-[6deg] -translate-x-2 border-[3px] border-ink"
+          />
 
-        {/* Clear subtitle with concrete offer */}
-        <motion.p
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2, ease }}
-          className="text-base sm:text-lg md:text-xl text-ink-soft max-w-xl leading-relaxed mb-8"
-        >
-          Recreación dinámica, sonido bluetooth, pintucaritas y globoflexia.
-          Los niños juegan de principio a fin y los papás disfrutan la fiesta sin estrés.
-        </motion.p>
-
-        {/* Brand Motif Interaction: Opción A (El Globo Boom) */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.7, delay: 0.3, ease }}
-          className="mb-8"
-        >
-          <BalloonBoom />
-        </motion.div>
-
-        {/* CTA Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.35, ease }}
-          className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto"
-        >
-          <motion.a
-            href="https://wa.me/573168674729?text=Hola%20Sammy%20Partyboom,%20quiero%20cotizar%20una%20fiesta%20infantil%20en%20Bucaramanga"
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.96 }}
-            transition={{ type: "spring", stiffness: 400, damping: 22 }}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full bg-accent text-white font-display font-bold text-base shadow-raised hover:bg-accent-hover transition-colors touch-target-44"
+          <motion.div style={{ y: frameY }} className="relative">
+          <motion.div
+            initial={{ opacity: 0, y: 40, rotate: -2 }}
+            animate={{ opacity: 1, y: 0, rotate: -1.5 }}
+            transition={{ duration: 1, delay: 0.25, ease }}
+            className="relative"
           >
-            <MessageCircle className="w-5 h-5 fill-white" />
-            <span>Cotizar fecha por WhatsApp</span>
-          </motion.a>
+            <LoopVideo
+              eager
+              src="/media/hero-baile.mp4"
+              poster="/media/hero-baile.jpg"
+              label="Video real: la animadora de Sammy Partyboom dirige un baile con los niños"
+              className="aspect-[4/5] rounded-[28px] border-[3px] border-ink bg-uva-light shadow-floating"
+            />
 
-          <motion.a
-            href="#paquetes"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.97 }}
-            transition={{ type: "spring", stiffness: 400, damping: 22 }}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-canvas border border-ink/15 text-ink font-semibold text-base hover:bg-ink/5 transition-colors touch-target-44"
+            {/* Floating chip over the photo */}
+            <span className="absolute top-4 left-4 inline-flex items-center h-8 px-3 rounded-full bg-canvas/95 text-[13px] font-semibold text-ink shadow-resting">
+              Video real de una fiesta
+            </span>
+
+            {/* Price card riding over the bottom edge */}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.9, ease }}
+              className="absolute -bottom-8 left-4 right-10 sm:right-16 lg:-left-10 lg:right-auto lg:w-[290px] rounded-2xl bg-canvas border-[3px] border-ink shadow-pop-lg p-4"
+            >
+              <p className="text-[13px] font-semibold text-ink-muted">Paquete más pedido · 3 horas</p>
+              <p className="mt-0.5 flex items-baseline gap-2">
+                <span className="font-display font-extrabold text-[2rem] leading-none tracking-tight">
+                  $200.000
+                </span>
+                <span className="text-[14px] text-ink-soft font-medium">con sonido</span>
+              </p>
+            </motion.div>
+          </motion.div>
+          </motion.div>
+
+          {/* The brand motif, tappable */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.6 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ ...springSnappy, delay: 1.1 }}
+            className="absolute -top-6 -right-2 sm:-right-6 lg:-top-10 lg:-right-10 z-10"
           >
-            <span>Ver paquetes y precios</span>
-            <ArrowDown className="w-4 h-4 text-ink-muted" />
-          </motion.a>
-        </motion.div>
+            <BalloonBoom />
+          </motion.div>
+        </div>
 
-        {/* Layered Hero Image Card (Pattern 54 & 6: Overlap depth) */}
-        <motion.div
-          initial={{ opacity: 0, y: 32 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.9, delay: 0.5, ease }}
-          className="relative w-full max-w-lg mt-10"
-        >
-          {/* Ambient colored backdrop layer */}
-          <div className="absolute inset-0 bg-festive-yellow/40 rounded-3xl transform rotate-1 scale-[1.02] -z-10" />
-          <div className="absolute inset-0 bg-festive-lavender/50 rounded-3xl transform -rotate-1 scale-[1.01] -z-10" />
-
-          {/* Main Card */}
-          <div className="relative overflow-hidden rounded-3xl border-2 border-ink bg-white shadow-floating">
-            <div className="aspect-[4/3] w-full overflow-hidden bg-festive-lavender/30 relative">
-              <img
-                src="/images/foto-animadora-princesas.jpeg"
-                alt="Animadora de Sammy Partyboom con niñas disfrazadas en evento de Bucaramanga"
-                className="w-full h-full object-cover object-center"
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                }}
-              />
-              {/* Designed fallback in case photo is missing or still loading */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center -z-10">
-                <Sparkles className="w-12 h-12 text-accent mb-2 animate-bounce" />
-                <span className="font-display font-bold text-lg text-ink">
-                  ¡Animación temática en vivo!
-                </span>
-                <span className="text-sm text-ink-muted">
-                  Bucaramanga, Santander
-                </span>
-              </div>
-            </div>
-
-            {/* Overlapping Info Strip */}
-            <div className="p-4 sm:p-5 bg-white border-t border-ink/10 flex items-center justify-between gap-3 text-left">
-              <div>
-                <p className="font-display font-bold text-sm sm:text-base text-ink">
-                  Animación infantil y recreación temática
-                </p>
-                <p className="text-[13px] sm:text-sm text-ink-muted">
-                  Juegos, pintucaritas, globoflexia y concursos
-                </p>
-              </div>
-              <span className="shrink-0 text-[13px] font-bold px-3 py-1.5 rounded-full bg-festive-yellow text-ink border border-ink/10">
-                100% Real
-              </span>
-            </div>
+        {/* Actions */}
+        <motion.div {...fade(0.6)} className="[grid-area:actions] lg:self-start">
+          <div className="flex flex-col sm:flex-row gap-3">
+            <motion.a
+              href={DEFAULT_WA}
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ y: -3 }}
+              whileTap={{ scale: 0.97, y: 0 }}
+              transition={springSnappy}
+              className="group inline-flex items-center justify-center gap-2.5 h-14 px-7 rounded-full bg-accent text-white font-display font-bold text-[17px] border-[3px] border-ink shadow-pop hover:shadow-pop-lg hover:bg-accent-hover transition-[background-color,box-shadow]"
+            >
+              <MessageCircle className="w-5 h-5 fill-white" aria-hidden="true" />
+              Cotizar mi fecha por WhatsApp
+            </motion.a>
+            <a
+              href="#paquetes"
+              className="group inline-flex items-center justify-center gap-2 h-14 px-6 rounded-full text-ink font-semibold text-[16px] hover:bg-ink/5 transition-colors"
+            >
+              Ver planes y precios
+              <ArrowDown className="w-4 h-4 transition-transform group-hover:translate-y-0.5" aria-hidden="true" />
+            </a>
           </div>
+
+          <ul className="mt-8 grid grid-cols-3 max-w-[34rem] divide-x divide-ink/15 border-y border-ink/15 text-left">
+            {[
+              ["3 h", "de juegos y música"],
+              ["4", "municipios del área"],
+              ["1–2", "semanas para reservar"],
+            ].map(([n, t]) => (
+              <li key={t} className="py-3.5 px-3 first:pl-0">
+                <span className="block font-display font-extrabold text-2xl sm:text-[28px] leading-none">{n}</span>
+                <span className="block text-[13px] sm:text-[14px] text-ink-muted mt-1 leading-snug">{t}</span>
+              </li>
+            ))}
+          </ul>
         </motion.div>
       </div>
     </section>

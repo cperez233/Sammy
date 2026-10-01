@@ -1,147 +1,95 @@
 /* editorial-ui · Cristian Pérez · cristianperez.me */
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import confetti from 'canvas-confetti';
+import React, { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import confetti from "canvas-confetti";
+import { BurstMark } from "./Reveal";
 
-interface BalloonBoomProps {
-  className?: string;
-}
+const COLORS = ["#E63956", "#FFC93C", "#7B3FC4", "#5EC8F2", "#FF8A3D", "#22C58B"];
 
-export const BalloonBoom: React.FC<BalloonBoomProps> = ({ className = "" }) => {
+/** The "Globo Boom": tap it, it pops into a comic burst with confetti, then re-inflates. */
+export const BalloonBoom: React.FC<{ className?: string }> = ({ className = "" }) => {
   const [popped, setPopped] = useState(false);
-  const [boomCount, setBoomCount] = useState(0);
+  const btn = useRef<HTMLButtonElement>(null);
+  const timer = useRef<number>();
 
-  const handlePop = (e: React.MouseEvent | React.TouchEvent) => {
-    e.stopPropagation();
-    const nextCount = boomCount + 1;
-    setBoomCount(nextCount);
+  useEffect(() => () => window.clearTimeout(timer.current), []);
+
+  const pop = () => {
+    if (popped) return;
     setPopped(true);
-
-    // Fire canvas-confetti with brand palette colors: Magenta, Sun Yellow, Lavender, Sky Blue, Teal
-    confetti({
-      particleCount: 45,
-      spread: 60,
-      origin: { y: 0.4 },
-      colors: ['#E63956', '#FFD166', '#B388EB', '#06D6A0', '#FF9F1C'],
-      disableForReducedMotion: true,
-    });
-
-    // Re-inflate balloon smoothly after 1.8s so it stays reusable
-    setTimeout(() => {
-      setPopped(false);
-    }, 1800);
+    const r = btn.current?.getBoundingClientRect();
+    const origin = r
+      ? { x: (r.left + r.width / 2) / window.innerWidth, y: (r.top + r.height / 2) / window.innerHeight }
+      : { x: 0.5, y: 0.4 };
+    confetti({ particleCount: 70, spread: 75, startVelocity: 32, origin, colors: COLORS, scalar: 0.9, disableForReducedMotion: true });
+    timer.current = window.setTimeout(() => setPopped(false), 1700);
   };
 
   return (
-    <div className={`relative flex flex-col items-center justify-center select-none ${className}`}>
-      <motion.button
-        type="button"
-        onClick={handlePop}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.92 }}
-        transition={{ type: "spring", stiffness: 400, damping: 20 }}
-        aria-label="Tocar el globo para hacer BOOM"
-        className="group relative cursor-pointer outline-none focus-visible:ring-4 focus-visible:ring-accent/30 rounded-full p-2 touch-manipulation"
-      >
+    <button
+      ref={btn}
+      type="button"
+      onClick={pop}
+      aria-label="Explotar el globo"
+      className={`group relative grid place-items-center w-[104px] h-[132px] touch-manipulation cursor-pointer ${className}`}
+    >
+      <AnimatePresence mode="wait" initial={false}>
         {!popped ? (
-          <motion.div
+          <motion.span
             key="balloon"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 1.3, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 300, damping: 18 }}
-            className="relative flex items-center justify-center anim-float"
+            className="block"
+            initial={{ scale: 0.3, opacity: 0, y: 20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 1.35, opacity: 0, transition: { duration: 0.12 } }}
+            transition={{ type: "spring", stiffness: 260, damping: 14 }}
           >
-            {/* Balloon SVG */}
-            <svg
-              width="110"
-              height="140"
-              viewBox="0 0 110 140"
-              fill="none"
-              className="drop-shadow-lg"
-            >
-              {/* Balloon String */}
-              <path
-                d="M55 106C55 118 51 124 57 136"
-                stroke="#685970"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-              {/* Balloon Knot */}
-              <path
-                d="M51 103L59 103L57 108L53 108Z"
-                fill="#D12745"
-                stroke="#211526"
-                strokeWidth="1.5"
-              />
-              {/* Main Balloon Body (Glossy Magenta) */}
-              <ellipse
-                cx="55"
-                cy="54"
-                rx="44"
-                ry="50"
-                fill="url(#balloonGradient)"
-                stroke="#211526"
-                strokeWidth="2.5"
-              />
-              {/* Gloss Highlight */}
-              <path
-                d="M32 30C36 22 45 18 53 18"
-                stroke="white"
-                strokeWidth="4"
-                strokeLinecap="round"
-                strokeOpacity="0.75"
-              />
-              <circle cx="30" cy="38" r="2.5" fill="white" fillOpacity="0.75" />
-              <defs>
-                <radialGradient
-                  id="balloonGradient"
-                  cx="0"
-                  cy="0"
-                  r="1"
-                  gradientUnits="userSpaceOnUse"
-                  gradientTransform="translate(42 36) rotate(52) scale(65)"
-                >
-                  <stop stopColor="#FF6584" />
-                  <stop offset="0.65" stopColor="#E63956" />
-                  <stop offset="1" stopColor="#C41D3B" />
-                </radialGradient>
-              </defs>
-            </svg>
-
-            {/* Micro Badge Hint */}
-            <span className="absolute -bottom-2 bg-ink text-canvas font-display text-[13px] font-bold px-3 py-1 rounded-full shadow-sm whitespace-nowrap group-hover:bg-accent transition-colors">
-              ¡Tócame! 🎈
+            <span className="block anim-float">
+              <motion.svg
+                width="92"
+                height="124"
+                viewBox="0 0 110 148"
+                whileHover={{ scale: 1.06, rotate: 4 }}
+                whileTap={{ scale: 0.9 }}
+                className="drop-shadow-[0_16px_18px_rgba(60,20,70,0.28)]"
+              >
+                <path d="M55 106c0 12-5 18 2 30s-4 10 0 12" stroke="#4A3A55" strokeWidth="2" fill="none" strokeLinecap="round" />
+                <path d="M50 102h10l-2.5 7h-5z" fill="#CC2645" stroke="#22142B" strokeWidth="2" strokeLinejoin="round" />
+                <ellipse cx="55" cy="54" rx="44" ry="50" fill="url(#bb-g)" stroke="#22142B" strokeWidth="3" />
+                <path d="M31 31c5-9 14-13 23-13" stroke="#fff" strokeWidth="5" strokeLinecap="round" opacity=".8" fill="none" />
+                <circle cx="28" cy="42" r="3" fill="#fff" opacity=".8" />
+                <defs>
+                  <radialGradient id="bb-g" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(40 34) rotate(55) scale(72)">
+                    <stop stopColor="#FF7A93" />
+                    <stop offset=".6" stopColor="#E63956" />
+                    <stop offset="1" stopColor="#B81E3A" />
+                  </radialGradient>
+                </defs>
+              </motion.svg>
             </span>
-          </motion.div>
+          </motion.span>
         ) : (
-          <motion.div
-            key="boom-state"
-            initial={{ scale: 0.5, rotate: -15, opacity: 0 }}
-            animate={{ scale: [1, 1.25, 1], rotate: [0, 8, 0], opacity: 1 }}
-            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-col items-center justify-center h-[140px] w-[140px]"
+          <motion.span
+            key="boom"
+            className="relative grid place-items-center"
+            initial={{ scale: 0.4, rotate: -20, opacity: 0 }}
+            animate={{ scale: 1, rotate: 0, opacity: 1 }}
+            exit={{ scale: 0.6, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 380, damping: 12 }}
           >
-            <div className="relative flex items-center justify-center">
-              <svg width="120" height="120" viewBox="0 0 100 100" fill="none">
-                <path
-                  d="M50 4L59 30L85 16L73 42L99 50L73 58L85 84L59 70L50 96L41 70L15 84L27 58L1 50L27 42L15 16L41 30Z"
-                  fill="#FFD166"
-                  stroke="#211526"
-                  strokeWidth="2.5"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span className="absolute font-display font-extrabold text-2xl text-accent tracking-tighter drop-shadow-sm">
-                ¡BOOM!
-              </span>
-            </div>
-            <span className="text-[12px] font-semibold text-ink-muted mt-1">
-              ¡Diversión activada! 💥
+            <BurstMark className="w-[120px] h-[120px]" />
+            <span className="absolute font-display font-extrabold text-[22px] text-accent -rotate-6 tracking-tight">
+              ¡BOOM!
             </span>
-          </motion.div>
+          </motion.span>
         )}
-      </motion.button>
-    </div>
+      </AnimatePresence>
+      <span
+        className={`absolute -bottom-1 text-[13px] font-semibold text-ink-soft transition-opacity ${
+          popped ? "opacity-0" : "opacity-100"
+        }`}
+      >
+        Tócalo
+      </span>
+    </button>
   );
 };

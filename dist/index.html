@@ -1,29 +1,57 @@
 <!doctype html>
-<html lang="es" class="scroll-smooth">
+<html lang="es">
   <head>
     <!-- Diseño y desarrollo: editorial-ui, skill de Cristian Pérez · https://cristianperez.me -->
     <meta name="generator" content="editorial-ui · Cristian Pérez (https://cristianperez.me)" />
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/jpeg" href="/assets/LOGO-wdrSo5Y0.jpeg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-    <meta name="theme-color" content="#FAF7F2" />
-    <title>Sammy Partyboom · Fiestas y Eventos Infantiles en Bucaramanga</title>
-    <meta name="description" content="Recreación, animación con sonido, pintucaritas, globoflexia y shows temáticos en Bucaramanga. Cotiza tu fiesta directo por WhatsApp." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Sammy Partyboom · Animación y recreación infantil en Bucaramanga</title>
+    <meta name="description" content="Animación con sonido, juegos, pintucaritas y globoflexia para fiestas infantiles en Bucaramanga, Floridablanca, Girón y Piedecuesta. Desde $200.000 por 3 horas. Cotiza por WhatsApp al 316 867 4729." />
+    <meta name="theme-color" content="#FBF6EE" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
-    <!-- Google Fonts: Bricolage Grotesque & Figtree -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Figtree:ital,wght@0,400..700;1,400&display=swap" rel="stylesheet" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_CO" />
+    <meta property="og:title" content="Sammy Partyboom · Fiestas infantiles que hacen BOOM" />
+    <meta property="og:description" content="Animación, sonido, pintucaritas y globoflexia en Bucaramanga. Desde $200.000 por 3 horas." />
+    <meta property="og:image" content="/og-image.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
 
+    <link rel="preload" href="/fonts/bricolage-grotesque-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/figtree-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/media/hero-baile.jpg" as="image" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "Sammy Partyboom",
+        "description": "Animación, recreación y eventos infantiles en Bucaramanga y su área metropolitana.",
+        "telephone": "+57 316 867 4729",
+        "image": "/images/logo-sammy.png",
+        "areaServed": ["Bucaramanga", "Floridablanca", "Girón", "Piedecuesta"],
+        "address": { "@type": "PostalAddress", "addressLocality": "Bucaramanga", "addressRegion": "Santander", "addressCountry": "CO" },
+        "sameAs": ["https://www.instagram.com/sammypartyboom/"],
+        "priceRange": "Desde $200.000 COP"
+      }
+    </script>
+
+    <script>
+      // Safety net (editorial-ui rule 2): if the app never hydrates, show everything.
+      setTimeout(function () {
+        if (!window.__hydrated) document.documentElement.classList.add("force-visible");
+      }, 6000);
+    </script>
     <noscript>
       <style>
-        [style*="opacity: 0"], [style*="opacity:0"] { opacity: 1 !important; transform: none !important; }
+        [style*="opacity"] { opacity: 1 !important; transform: none !important; }
       </style>
     </noscript>
-    <script type="module" crossorigin src="/assets/index-C5VvZEPM.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-DH9wUBfP.css">
+    <script type="module" crossorigin src="/assets/index-WRydFlRF.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DrA0Nkqx.css">
   </head>
-  <body class="bg-canvas text-ink font-sans antialiased selection:bg-accent/15 selection:text-accent overflow-x-clip min-h-screen">
+  <body>
     <div id="root"></div>
   </body>
 </html>

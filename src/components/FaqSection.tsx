@@ -1,111 +1,113 @@
 /* editorial-ui · Cristian Pérez · cristianperez.me */
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { MotifStar } from './MotifStar';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { MessageCircle } from "lucide-react";
+import { Reveal, SectionLabel, BurstMark } from "./Reveal";
+import { PHONE_DISPLAY, ease, waLink } from "../lib/site";
 
-interface FaqItem {
-  id: string;
-  question: string;
-  answer: string;
-}
-
-const FAQS: FaqItem[] = [
+const FAQS = [
   {
     id: "anticipacion",
-    question: "¿Con cuánta anticipación se debe reservar la fecha?",
-    answer: "Recomendamos apartar con 1 a 2 semanas de anticipación, especialmente para sábados y domingos en la tarde, que son los horarios más solicitados en Bucaramanga.",
+    q: "¿Con cuánta anticipación debo reservar?",
+    a: "Recomendamos apartar la fecha con 1 a 2 semanas de anticipación, sobre todo para sábados y domingos en la tarde, que son los horarios más pedidos.",
   },
   {
     id: "cobertura",
-    question: "¿Qué zonas de Santander cubren con sus eventos?",
-    answer: "Atendemos Bucaramanga y toda su área metropolitana: Floridablanca (Cañaveral), Girón y Piedecuesta. Vamos a salones sociales de conjuntos cerrados, casas particulares, colegios y sedes campestres.",
+    q: "¿A qué zonas van?",
+    a: "Bucaramanga y su área metropolitana: Floridablanca (incluido Cañaveral), Girón y Piedecuesta. Vamos a salones sociales de conjuntos, casas, colegios y fincas cercanas.",
   },
   {
     id: "premios",
-    question: "¿Quién aporta los premios para los concursos y rifas?",
-    answer: "El animador se encarga de dirigir todos los concursos y dinámicas. El cliente debe tener listos los regalos o sorpresas que desee entregar a los niños durante las actividades.",
+    q: "¿Quién pone los premios de los concursos y rifas?",
+    a: "El animador dirige todos los concursos y dinámicas. Los regalos o sorpresas que quieras entregar a los niños los pones tú.",
   },
   {
     id: "espacio",
-    question: "¿Qué pasa si el espacio de la fiesta es reducido?",
-    answer: "El animador ajusta las actividades al tamaño del lugar. Si es una sala o garaje, se priorizan juegos en ronda, trivias, concursos de baile en el puesto y globoflexia.",
+    q: "¿Y si el espacio es pequeño?",
+    a: "El animador adapta las actividades al lugar. En una sala o un garaje se priorizan rondas, trivias, concursos de baile en el puesto y globoflexia.",
   },
   {
-    id: "pago",
-    question: "¿Cómo se confirma la reserva del evento?",
-    answer: "Nos escribes por WhatsApp al [316 8674729], validamos disponibilidad de día y hora, y se agenda el cupo con el abono inicial acordado.",
+    id: "reserva",
+    q: "¿Cómo se confirma la reserva?",
+    a: `Nos escribes por WhatsApp al ${PHONE_DISPLAY}, confirmamos disponibilidad de día y hora, y la fecha queda apartada con el abono que acordemos.`,
   },
 ];
 
 export const FaqSection: React.FC = () => {
-  const [openId, setOpenId] = useState<string | null>("anticipacion");
-
-  const toggle = (id: string) => {
-    setOpenId(openId === id ? null : id);
-  };
+  const [open, setOpen] = useState<string | null>(FAQS[0].id);
 
   return (
-    <section className="py-14 sm:py-20 px-4 sm:px-6 bg-canvas border-t border-ink/5">
-      <div className="max-w-3xl mx-auto">
-        {/* Header */}
-        <div className="text-center sm:text-left mb-10">
-          <div className="inline-flex items-center gap-2 text-ink text-sm sm:text-base font-semibold mb-2">
-            <span className="w-1.5 h-4 rounded-full bg-accent" />
-            <span>Preguntas frecuentes</span>
-          </div>
-          <h2 className="font-display font-bold text-2xl sm:text-4xl text-ink tracking-tight">
-            Respuestas claras antes de contratar
+    <section
+      id="preguntas"
+      className="relative -mt-8 rounded-t-[36px] bg-canvas shadow-sheet pt-16 sm:pt-24 pb-20 sm:pb-28 px-4 sm:px-6"
+    >
+      <div className="max-w-6xl mx-auto grid gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
+        <Reveal className="lg:sticky lg:top-28 self-start">
+          <SectionLabel>Preguntas frecuentes</SectionLabel>
+          <h2 className="font-display font-extrabold text-[clamp(2.1rem,6vw,3.6rem)] leading-[1.02] tracking-[-0.03em]">
+            Lo que los papás preguntan antes de reservar
           </h2>
-          <p className="text-base text-ink-muted mt-1">
-            Lo que los papás suelen consultar antes de celebrar con nosotros.
-          </p>
-        </div>
+          <a
+            href={waLink("Hola Sammy Partyboom, tengo una pregunta sobre una fiesta.")}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group mt-7 inline-flex items-center gap-2 h-11 text-[16px] font-semibold text-accent"
+          >
+            <MessageCircle className="w-5 h-5" aria-hidden="true" />
+            <span className="underline decoration-2 underline-offset-4 decoration-accent/30 group-hover:decoration-accent transition-colors">
+              ¿Otra pregunta? Escríbenos
+            </span>
+          </a>
+        </Reveal>
 
-        {/* Accordion list with Brand object as control glyph (Pattern 53) */}
-        <div className="space-y-3">
-          {FAQS.map((faq) => {
-            const isOpen = openId === faq.id;
-            return (
-              <div
-                key={faq.id}
-                className="rounded-2xl border border-ink/10 bg-white overflow-hidden transition-shadow shadow-sm hover:shadow-resting"
-              >
-                <button
-                  type="button"
-                  onClick={() => toggle(faq.id)}
-                  aria-expanded={isOpen}
-                  className="w-full p-5 text-left flex items-center justify-between gap-4 touch-target-44 outline-none focus-visible:ring-2 focus-visible:ring-accent"
-                >
-                  <span className="font-display font-bold text-base sm:text-lg text-ink">
-                    {faq.question}
-                  </span>
-
-                  {/* Brand Glyph (Pattern 53): Comic star rotates 45deg on open */}
-                  <span className="shrink-0 p-1 rounded-full bg-festive-yellow/30 border border-ink/10 flex items-center justify-center">
-                    <MotifStar size={18} color="#FFD166" rotate={isOpen} />
-                  </span>
-                </button>
-
-                {/* Animated accordion (Pattern 21: keeps answers in HTML) */}
-                <AnimatePresence initial={false}>
-                  {isOpen && (
-                    <motion.div
-                      key="content"
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        <Reveal delay={0.1}>
+          <ul className="border-t-2 border-ink">
+            {FAQS.map((f) => {
+              const isOpen = open === f.id;
+              return (
+                <li key={f.id} className="border-b border-ink/15">
+                  <h3>
+                    <button
+                      type="button"
+                      aria-expanded={isOpen}
+                      aria-controls={`faq-${f.id}`}
+                      onClick={() => setOpen(isOpen ? null : f.id)}
+                      className="group w-full flex items-center justify-between gap-5 py-5 sm:py-6 text-left"
                     >
-                      <div className="px-5 pb-5 pt-1 text-sm sm:text-base text-ink-soft leading-relaxed border-t border-ink/5">
-                        {faq.answer}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            );
-          })}
-        </div>
+                      <span className="font-display font-bold text-[19px] sm:text-[22px] leading-snug group-hover:text-accent transition-colors">
+                        {f.q}
+                      </span>
+                      <motion.span
+                        animate={{ rotate: isOpen ? 72 : 0, scale: isOpen ? 1.1 : 1 }}
+                        transition={{ type: "spring", stiffness: 300, damping: 18 }}
+                        className="shrink-0"
+                      >
+                        <BurstMark className="w-8 h-8" fill={isOpen ? "#FFC93C" : "#FBF6EE"} />
+                      </motion.span>
+                    </button>
+                  </h3>
+                  {/* Answer stays in the DOM; grid rows animate the height */}
+                  <div
+                    id={`faq-${f.id}`}
+                    className={`grid transition-[grid-template-rows] duration-400 ease-[cubic-bezier(.22,1,.36,1)] ${
+                      isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                    }`}
+                  >
+                    <div className="overflow-hidden">
+                      <motion.p
+                        animate={{ opacity: isOpen ? 1 : 0, y: isOpen ? 0 : -6 }}
+                        transition={{ duration: 0.3, ease }}
+                        className="pb-6 pr-12 text-[17px] text-ink-soft leading-relaxed"
+                      >
+                        {f.a}
+                      </motion.p>
+                    </div>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </Reveal>
       </div>
     </section>
   );

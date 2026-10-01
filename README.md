@@ -32,26 +32,22 @@ Siguiendo la metodología de **editorial-ui** para evitar plantillas genéricas 
 
 ---
 
-## 3. Estructura de Secciones y Contenido
+## 3. Estructura de Secciones y Contenido (rediseño)
 
-1. **Header:** Identidad de marca, distinción de Bucaramanga y botón de contacto rápido.
-2. **Hero:** Propuesta de valor clara, titular dinámico, globo interactivo, llamadas a la acción directas y tarjeta visual en capas con foto real del equipo.
-3. **Paquetes y Precios:**
-   - **Paquete Animación + Sonido ($200.000 COP · 3 Horas):** Paquete base de referencia en Bucaramanga con 1 animador, micrófono, parlante bluetooth, pintucaritas, globoflexia y todas las dinámicas.
-   - **Condiciones honestas (Principio de qué NO incluye):** Se aclara explícitamente que el cliente debe disponer de los premios y sorpresas para las rifas.
-   - **Otros paquetes:** Animación sin sonido, Animación + Decoración, y Paquete FULL.
-   - **Servicios adicionales:** Animador disfrazado/temático, sorpresas personalizadas y camisetas para el evento.
-   - **Oferta abierta:** Tarjeta con puerta a WhatsApp (*"¿Otra cosa? Cuéntanos"*).
-4. **Galería (Trabajo Real):** Tarjetas en capas (*layered peer cards*) con capturas reales extraídas de las fotos y videos del negocio en Bucaramanga, preparadas con respaldo gráfico SVG en caso de ausencia de imágenes.
-5. **Cotizador con Vista Previa de WhatsApp (Patrón 48):** Selector dinámico de plan, sector (Cabecera, Cañaveral, Girón, etc.), cantidad de niños y nombre, que renderiza en tiempo real la burbuja de chat exacta que se enviará al número `316 8674729`.
-6. **Preguntas Frecuentes:** Acordeón accesible que conserva el contenido en el DOM y utiliza la estrella cómic del logo como glifo de control giratorio (*Patrón 53*).
-7. **Footer:** Canales directos, datos de cobertura y firma del autor (**Cristian Pérez** · `editorial-ui`).
+1. **Header:** logo circular limpio (recortado de la captura original), enlaces por sección con indicador activo en escritorio y botón directo a WhatsApp.
+2. **Hero:** titular *"Menos fiestas aburridas, más momentos que hacen BOOM."* con revelación por palabra, video real de una fiesta en un marco con capas, tarjeta de precio ($200.000 · 3 horas) superpuesta y el globo "Boom" interactivo.
+3. **Franja animada:** servicios en movimiento (38 px/s) con el estallido de cómic del logo como separador.
+4. **Fiestas reales:** carrusel de 6 clips de video reales (silenciados, en bucle, solo se reproducen cuando están en pantalla) + foto de personajes + puerta a Instagram.
+5. **Cómo son las 3 horas:** programa de la fiesta en 6 pasos con un camino punteado que se dibuja con el scroll.
+6. **Planes y precios:** selector de planes + tarjeta tipo boleta con el precio; adicionales en lista y puerta abierta "¿Otra cosa? Cuéntanos".
+7. **Cotizador:** formulario (plan, fecha, municipio, niños, cumpleañero) con vista previa en un celular con WhatsApp.
+8. **Preguntas frecuentes** y **footer** con cierre "¿Hacemos BOOM en tu fiesta?".
 
----
+Recursos: los clips están en `public/media/` (MP4 + WebM de respaldo, ~7 MB en total, carga diferida), las fuentes Bricolage Grotesque y Figtree se sirven desde `public/fonts/`.
 
 ## 4. Calidad, Accesibilidad y Rendimiento
 
-* **Medición móvil verificada:** 0 desbordamientos horizontales (`overflow-x: clip`), largo total en móviles de 9.9 pantallas (dentro del estándar para lectura ágil).
+* **Medición móvil verificada:** 0 desbordamientos horizontales (`overflow-x: clip`), largo total en móviles de 10.6 pantallas (dentro del estándar para lectura ágil).
 * **Tamaños mínimos de texto:** Etiquetas y notas a partir de 13px / 13.5px; cuerpo de texto a 16px.
 * **Blancos táctiles seguros:** Todos los enlaces, botones y pestañas cumplen con un área mínima táctil de 44x44px.
 * **Reducción de movimiento (`prefers-reduced-motion`):** Integrado a nivel global mediante `<MotionConfig reducedMotion="user">` y reglas CSS que pausan bucles si el usuario tiene activada la preferencia de accesibilidad.
