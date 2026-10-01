@@ -1,7 +1,8 @@
 /* editorial-ui · Cristian Pérez · cristianperez.me */
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Check, Clock, MessageCircle, ArrowUpRight, Info } from "lucide-react";
+import { WhatsAppIcon } from "./WhatsAppIcon";
+import { Check, Clock, ArrowUpRight, Info } from "lucide-react";
 import { Reveal, SectionLabel, BurstMark, HeadingWords } from "./Reveal";
 import { CtaButton } from "./CtaButton";
 import { ease, waLink } from "../lib/site";
@@ -106,6 +107,32 @@ const EXTRAS = [
   { title: "Camisetas estampadas", desc: "Con el nombre del cumpleañero y el motivo de la fiesta." },
 ];
 
+/** Rubber-stamp sticker riding the ticket corner; spins a little on every change. */
+const PriceStamp: React.FC<{ idx: number }> = ({ idx }) => (
+  <motion.div
+    aria-hidden="true"
+    initial={{ scale: 0, rotate: -60 }}
+    whileInView={{ scale: 1, rotate: -12 }}
+    viewport={{ once: true }}
+    transition={{ type: "spring", stiffness: 200, damping: 12, delay: 0.3 }}
+    className="pointer-events-none absolute -top-16 -right-1 sm:-top-12 sm:-right-8 z-20 w-[84px] h-[84px] sm:w-[118px] sm:h-[118px]"
+  >
+    <motion.div key={idx} initial={{ rotate: -40, scale: 0.85 }} animate={{ rotate: 0, scale: 1 }} transition={{ type: "spring", stiffness: 260, damping: 12 }} className="w-full h-full">
+      <svg viewBox="0 0 120 120" className="w-full h-full anim-spin-slow">
+        <defs>
+          <path id="stamp-circle" d="M60 60m-45 0a45 45 0 1 1 90 0a45 45 0 1 1-90 0" />
+        </defs>
+        <circle cx="60" cy="60" r="58" fill="#FFC93C" stroke="#22142B" strokeWidth="3" />
+        <circle cx="60" cy="60" r="33" fill="#22142B" />
+        <text fill="#22142B" fontSize="10.5" fontWeight="800" letterSpacing="1" fontFamily="Figtree, sans-serif">
+          <textPath href="#stamp-circle">PRECIOS CLAROS • SIN LETRA PEQUEÑA •</textPath>
+        </text>
+      </svg>
+      <span className="absolute inset-0 grid place-items-center font-display font-extrabold text-[22px] sm:text-[26px] text-festive-yellow leading-none">3h</span>
+    </motion.div>
+  </motion.div>
+);
+
 const Ticket: React.FC<{ pkg: PackageInfo; on: boolean; dir: number; onSwipe: (d: 1 | -1) => void }> = ({
   pkg,
   on,
@@ -206,7 +233,7 @@ const Ticket: React.FC<{ pkg: PackageInfo; on: boolean; dir: number; onSwipe: (d
           <p className="mt-3 text-[14px] leading-snug text-ink/80">{pkg.priceNote}</p>
         </div>
         <CtaButton href={waLink(pkg.message)} external size="md" tone="ink" arrow={false} className="w-full">
-          <MessageCircle className="w-[18px] h-[18px] text-wa fill-wa" aria-hidden="true" />
+          <WhatsAppIcon className="w-[18px] h-[18px] text-wa" />
           {pkg.cta}
         </CtaButton>
       </div>
@@ -285,8 +312,22 @@ export const Packages: React.FC = () => {
           </div>
 
           {/* All tickets live in the HTML, stacked in one cell; swipe on phones */}
-          <div>
-            <div className="grid">
+          <div className="relative">
+            {/* Layered deck: tickets waiting behind, peeking from the side they slide to */}
+            <motion.div
+              aria-hidden="true"
+              animate={{ rotate: idx % 2 ? 3.5 : 2.5, x: idx % 2 ? 22 : 16, y: 14 }}
+              transition={{ type: "spring", stiffness: 180, damping: 16 }}
+              className="absolute inset-0 rounded-[30px] bg-accent border-[3px] border-ink"
+            />
+            <motion.div
+              aria-hidden="true"
+              animate={{ rotate: idx % 2 ? -1.5 : 1.5, x: idx % 2 ? 10 : 8, y: 7 }}
+              transition={{ type: "spring", stiffness: 220, damping: 16 }}
+              className="absolute inset-0 rounded-[30px] bg-uva border-[3px] border-ink"
+            />
+            <PriceStamp idx={idx} />
+            <div className="relative grid">
               {PACKAGES.map((p, i) => (
                 <Ticket key={p.id} pkg={p} on={i === idx} dir={dir} onSwipe={(d) => go(idx + d)} />
               ))}

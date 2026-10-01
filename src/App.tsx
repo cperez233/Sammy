@@ -68,8 +68,8 @@ export const App: React.FC = () => {
         <main>
           <Hero />
           <Marquee />
-          <Showcase />
           <Statement />
+          <Showcase />
           <HowItGoes />
           <Packages />
           <WhatsAppComposer />

@@ -8,7 +8,8 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
-import { MessageCircle, Phone, ArrowUpRight } from "lucide-react";
+import { WhatsAppIcon } from "./WhatsAppIcon";
+import { Phone, ArrowUpRight } from "lucide-react";
 import { BurstMark } from "./Reveal";
 import { CtaButton } from "./CtaButton";
 import {
@@ -201,7 +202,7 @@ export const Header: React.FC = () => {
 
           <div className="pointer-events-auto flex items-center gap-2">
             <CtaButton href={DEFAULT_WA} external size="md" className="hidden sm:inline-flex">
-              <MessageCircle className="w-[18px] h-[18px] fill-white" aria-hidden="true" />
+              <WhatsAppIcon className="w-[18px] h-[18px]" />
               Cotizar
             </CtaButton>
 
@@ -213,7 +214,7 @@ export const Header: React.FC = () => {
               aria-expanded={open}
               aria-controls="menu-movil"
               className={`lg:hidden relative inline-flex items-center gap-2.5 h-12 pl-4 pr-3.5 rounded-full border-2 border-ink font-semibold text-[15px] transition-colors duration-300 ${
-                open ? "bg-festive-yellow text-ink" : "bg-ink text-canvas shadow-raised"
+                open ? "bg-festive-yellow text-ink" : "bg-ink text-canvas shadow-raised ring-2 ring-canvas/25"
               }`}
             >
               {open ? "Cerrar" : "Menú"}
@@ -279,7 +280,7 @@ export const Header: React.FC = () => {
               className="mt-8 space-y-3"
             >
               <CtaButton href={DEFAULT_WA} external size="lg" className="w-full">
-                <MessageCircle className="w-5 h-5 fill-white" aria-hidden="true" />
+                <WhatsAppIcon className="w-5 h-5" />
                 Cotizar por WhatsApp
               </CtaButton>
               <div className="flex gap-3 text-[15px]">

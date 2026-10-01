@@ -1,7 +1,7 @@
 /* editorial-ui · Cristian Pérez · cristianperez.me */
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { MessageCircle } from "lucide-react";
+import { WhatsAppIcon } from "./WhatsAppIcon";
 import { Reveal, SectionLabel, BurstMark, HeadingWords } from "./Reveal";
 import { PHONE_DISPLAY, ease, waLink } from "../lib/site";
 
@@ -53,7 +53,7 @@ export const FaqSection: React.FC = () => {
             rel="noopener noreferrer"
             className="group mt-7 inline-flex items-center gap-2 h-11 text-[16px] font-semibold text-accent"
           >
-            <MessageCircle className="w-5 h-5" aria-hidden="true" />
+            <WhatsAppIcon className="w-5 h-5" />
             <span className="underline decoration-2 underline-offset-4 decoration-accent/30 group-hover:decoration-accent transition-colors">
               ¿Otra pregunta? Escríbenos
             </span>

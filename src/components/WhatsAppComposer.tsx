@@ -3,6 +3,7 @@ import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { CheckCheck, Send } from "lucide-react";
 import { Reveal, SectionLabel, HeadingWords } from "./Reveal";
+import { WhatsAppIcon } from "./WhatsAppIcon";
 import { PACKAGES } from "./Packages";
 import { PHONE_DISPLAY, springSnappy, waLink } from "../lib/site";
 
@@ -191,6 +192,7 @@ export const WhatsAppComposer: React.FC = () => {
                   transition={springSnappy}
                   className="flex items-center justify-center gap-2 h-14 rounded-full bg-wa text-white font-display font-bold text-[17px] hover:bg-[#1FB959] transition-colors"
                 >
+                  <WhatsAppIcon className="w-5 h-5" />
                   Enviar por WhatsApp
                   <Send className="w-[18px] h-[18px]" aria-hidden="true" />
                 </motion.a>

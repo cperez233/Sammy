@@ -1,7 +1,8 @@
 /* editorial-ui · Cristian Pérez · cristianperez.me */
 import React, { useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useScroll, useSpring, useTransform, type MotionValue } from "framer-motion";
-import { ArrowDown, MessageCircle } from "lucide-react";
+import { WhatsAppIcon } from "./WhatsAppIcon";
+import { ArrowDown } from "lucide-react";
 import { BalloonBoom } from "./BalloonBoom";
 import { LoopVideo } from "./LoopVideo";
 import { BurstMark } from "./Reveal";
@@ -284,7 +285,7 @@ export const Hero: React.FC = () => {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ type: "spring", stiffness: 200, damping: 16, delay: 1.2 }}
-            className="absolute -top-8 -right-3 sm:-right-8 lg:-top-14 lg:-right-14 z-20"
+            className="absolute -top-16 -right-4 sm:-right-10 lg:-top-24 lg:-right-20 z-20 scale-[0.82] sm:scale-100 origin-bottom"
           >
             <BalloonBoom />
           </motion.div>
@@ -299,7 +300,7 @@ export const Hero: React.FC = () => {
         >
           <div className="flex flex-col sm:flex-row gap-3">
             <CtaButton href={DEFAULT_WA} external>
-              <MessageCircle className="w-5 h-5 fill-white" aria-hidden="true" />
+              <WhatsAppIcon className="w-5 h-5" />
               Cotizar mi fecha por WhatsApp
             </CtaButton>
             <a

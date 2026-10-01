@@ -1,7 +1,8 @@
 /* editorial-ui · Cristian Pérez · cristianperez.me */
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { MessageCircle, Phone, MapPin } from "lucide-react";
+import { WhatsAppIcon } from "./WhatsAppIcon";
+import { Phone, MapPin } from "lucide-react";
 import { BurstMark, Reveal, HeadingWords } from "./Reveal";
 import { CtaButton } from "./CtaButton";
 import { invisibleSignature } from "../utils/signature";
@@ -49,7 +50,7 @@ export const Footer: React.FC = () => (
           </p>
           <div className="mt-8">
             <CtaButton href={DEFAULT_WA} external tone="light">
-              <MessageCircle className="w-5 h-5 fill-white" aria-hidden="true" />
+              <WhatsAppIcon className="w-5 h-5" />
               Escribir al {PHONE_DISPLAY}
             </CtaButton>
           </div>
@@ -78,7 +79,7 @@ export const Footer: React.FC = () => (
           <ul className="text-[16px]">
             <li>
               <a href={DEFAULT_WA} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 min-h-[44px] hover:text-festive-yellow transition-colors">
-                <MessageCircle className="w-5 h-5 text-wa" aria-hidden="true" /> WhatsApp {PHONE_DISPLAY}
+                <WhatsAppIcon className="w-5 h-5 text-wa" /> WhatsApp {PHONE_DISPLAY}
               </a>
             </li>
             <li>

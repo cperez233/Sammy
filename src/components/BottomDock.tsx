@@ -1,7 +1,7 @@
 /* editorial-ui · Cristian Pérez · cristianperez.me */
 import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { MessageCircle } from "lucide-react";
+import { WhatsAppIcon } from "./WhatsAppIcon";
 import { BurstMark } from "./Reveal";
 import { DEFAULT_WA, springSnappy } from "../lib/site";
 
@@ -93,7 +93,7 @@ export const BottomDock: React.FC = () => {
               transition={springSnappy}
               className="flex-[1.4] inline-flex items-center justify-center gap-1.5 h-11 rounded-full bg-accent text-white font-display font-bold text-[15px]"
             >
-              <MessageCircle className="w-4 h-4 fill-white" aria-hidden="true" />
+              <WhatsAppIcon className="w-4 h-4" />
               WhatsApp
             </motion.a>
           </div>

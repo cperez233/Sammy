@@ -111,3 +111,15 @@
   100% { transform: translateY(0); box-shadow: 0 0 0 22px rgba(255, 201, 60, 0); }
 }
 .arrived { animation: arrive 1s cubic-bezier(.22, 1, .36, 1) 1; }
+
+/* Balloon cluster sway: each balloon on its own rhythm */
+@keyframes sway {
+  0%, 100% { transform: rotate(-4deg) translateY(0); }
+  50% { transform: rotate(4deg) translateY(-6px); }
+}
+.anim-sway-a { animation: sway 4.2s ease-in-out infinite; }
+.anim-sway-b { animation: sway 3.6s ease-in-out -1.2s infinite; }
+.anim-sway-c { animation: sway 4.8s ease-in-out -2.4s infinite; }
+
+@keyframes nudge { 0%, 100% { transform: translateY(-2px); } 50% { transform: translateY(3px); } }
+.anim-nudge { animation: nudge 1.4s ease-in-out infinite; }
