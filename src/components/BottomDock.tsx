@@ -9,6 +9,7 @@ const LINKS = [
   { href: "#fiestas", label: "Videos" },
   { href: "#paquetes", label: "Planes" },
   { href: "#cotizar", label: "Cotizar" },
+  { href: "#preguntas", label: "FAQ" },
 ];
 
 /** Phone-only dock: appears after the hero, hides over the footer, marks where you are. */
@@ -33,7 +34,7 @@ export const BottomDock: React.FC = () => {
     const update = () => {
       raf = 0;
       const footer = document.querySelector("footer");
-      const nearFooter = footer ? footer.getBoundingClientRect().top < window.innerHeight - 40 : false;
+      const nearFooter = footer ? footer.getBoundingClientRect().top < window.innerHeight * 0.35 : false;
       setVisible(window.scrollY > window.innerHeight * 0.6 && !nearFooter);
 
       if (locked.current) return;
@@ -42,7 +43,7 @@ export const BottomDock: React.FC = () => {
       let current: string | null = null;
       document.querySelectorAll<HTMLElement>("main > section[id]").forEach((s) => {
         const r = s.getBoundingClientRect();
-        if (r.top <= mid && r.bottom > mid) current = `#${s.id}`;
+        if (r.top <= mid) current = `#${s.id}`;
       });
       setActive(LINKS.some((l) => l.href === current) ? current : null);
     };
@@ -81,13 +82,14 @@ export const BottomDock: React.FC = () => {
           className="lg:hidden fixed inset-x-0 bottom-0 z-50 px-3 pb-[max(12px,env(safe-area-inset-bottom))] pointer-events-none"
         >
           <div className="pointer-events-auto mx-auto max-w-md flex items-center gap-1 p-1.5 rounded-full bg-canvas border-[3px] border-ink shadow-floating">
-            <div className="relative flex flex-[3] items-center">
+            <div className="relative flex items-center" style={{ flex: LINKS.length }}>
               <motion.span
                 aria-hidden="true"
                 initial={false}
                 animate={{ x: `${Math.max(idx, 0) * 100}%`, opacity: idx >= 0 ? 1 : 0 }}
                 transition={{ x: { type: "spring", bounce: 0, duration: 0.4 }, opacity: { duration: 0.15 } }}
-                className="absolute left-0 inset-y-0 w-1/3 rounded-full bg-ink will-change-transform"
+                style={{ width: `${100 / LINKS.length}%` }}
+                className="absolute left-0 inset-y-0 rounded-full bg-ink will-change-transform"
               >
                 <BurstMark className="absolute -top-2 -right-1 w-4 h-4" />
               </motion.span>
@@ -99,7 +101,7 @@ export const BottomDock: React.FC = () => {
                     href={l.href}
                     onClick={(e) => go(e, l.href)}
                     aria-current={on ? "true" : undefined}
-                    className={`relative flex-1 grid place-items-center h-11 rounded-full text-[15px] font-semibold transition-colors duration-200 ${
+                    className={`relative flex-1 grid place-items-center h-11 rounded-full text-[14px] sm:text-[15px] font-semibold transition-colors duration-200 ${
                       on ? "text-canvas" : "text-ink"
                     }`}
                   >

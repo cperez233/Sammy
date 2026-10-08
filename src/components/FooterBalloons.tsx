@@ -17,14 +17,19 @@ const CONFETTI = Array.from({ length: 14 }, (_, i) => {
 /** Balloons drift up the footer; tap one and it goes BOOM (the brand line). */
 export const FooterBalloons: React.FC = () => {
   const [popped, setPopped] = useState<Record<number, number>>({});
+  const [gen, setGen] = useState<number[]>(() => BALLOONS.map(() => 0));
   const timers = useRef<number[]>([]);
   useEffect(() => () => timers.current.forEach(clearTimeout), []);
 
   const pop = (i: number) => {
     if (popped[i]) return;
     setPopped((p) => ({ ...p, [i]: Date.now() }));
+    // After the BOOM fades, a fresh balloon starts its climb from the floor (new key restarts the loop).
     timers.current.push(
-      window.setTimeout(() => setPopped((p) => { const n = { ...p }; delete n[i]; return n; }), 2600)
+      window.setTimeout(() => {
+        setPopped((p) => { const n = { ...p }; delete n[i]; return n; });
+        setGen((g) => g.map((v, k) => (k === i ? v + 1 : v)));
+      }, 1100)
     );
   };
 
@@ -32,13 +37,13 @@ export const FooterBalloons: React.FC = () => {
     <div className="absolute inset-x-0 bottom-0 h-[70%] pointer-events-none z-10">
       {BALLOONS.map((b, i) => (
         <div key={i} className="absolute bottom-0" style={{ left: b.left }}>
-          <div className="anim-balloon" style={{ animationDelay: b.delay, animationDuration: b.dur }}>
+          <div key={gen[i]} className="anim-balloon" style={{ animationDelay: gen[i] ? "0s" : b.delay, animationDuration: b.dur }}>
             {popped[i] ? (
               <div className="relative w-14 h-16">
                 <motion.span
                   initial={{ scale: 0.4, opacity: 0, rotate: -8 }}
-                  animate={{ scale: 1, opacity: 1, rotate: -8 }}
-                  transition={{ type: "spring", stiffness: 500, damping: 14 }}
+                  animate={{ scale: 1, opacity: [0, 1, 1, 0], rotate: -8 }}
+                  transition={{ scale: { type: "spring", stiffness: 500, damping: 14 }, opacity: { duration: 1.1, times: [0, 0.1, 0.7, 1] } }}
                   className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-display font-extrabold text-xl text-festive-yellow whitespace-nowrap"
                 >
                   ¡BOOM!

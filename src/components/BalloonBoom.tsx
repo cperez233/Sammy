@@ -37,7 +37,7 @@ const Balloon: React.FC<{ b: B }> = ({ b }) => {
         origin: { x: (r.left + r.width / 2) / innerWidth, y: (r.top + r.height / 2) / innerHeight },
         disableForReducedMotion: true,
       });
-    t.current = window.setTimeout(() => setPopped(false), 2200);
+    t.current = window.setTimeout(() => setPopped(false), 1800);
   };
 
   const h = b.size * 1.2;
@@ -54,12 +54,14 @@ const Balloon: React.FC<{ b: B }> = ({ b }) => {
         {!popped ? (
           <motion.span
             key="b"
-            className={`block w-full h-full origin-bottom ${b.sway}`}
-            initial={{ scale: 0.2, opacity: 0 }}
+            className="block w-full h-full"
+            style={{ transformOrigin: "50% 94%" }}
+            initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 1.4, opacity: 0, transition: { duration: 0.1 } }}
-            transition={{ type: "spring", stiffness: 260, damping: 12 }}
+            transition={{ type: "spring", stiffness: 90, damping: 13, opacity: { duration: 0.25 } }}
           >
+           <span className={`block w-full h-full origin-bottom ${b.sway}`}>
             <motion.svg
               viewBox="0 0 60 72"
               className="w-full h-full overflow-visible drop-shadow-[0_10px_10px_rgba(60,20,70,0.25)]"
@@ -83,6 +85,7 @@ const Balloon: React.FC<{ b: B }> = ({ b }) => {
               <path d="M15 20c3-6 8-9 14-10" stroke="#fff" strokeWidth="4" strokeLinecap="round" opacity=".75" fill="none" />
               <circle cx="13" cy="28" r="2.4" fill="#fff" opacity=".75" />
             </motion.svg>
+           </span>
           </motion.span>
         ) : (
           <motion.span
@@ -111,7 +114,7 @@ export const BalloonBoom: React.FC<{ className?: string }> = ({ className = "" }
       {BALLOONS.map((b) => (
         <path
           key={b.id}
-          d={`M${b.x + b.size / 2} ${b.y + b.size * 1.2 - 2} Q ${(b.x + b.size / 2 + KNOT.x) / 2 + 6} ${(b.y + b.size * 1.2 + KNOT.y) / 2} ${KNOT.x} ${KNOT.y}`}
+          d={`M${b.x + b.size / 2} ${b.y + b.size * 1.2 * 0.93} Q ${(b.x + b.size / 2 + KNOT.x) / 2 + 6} ${(b.y + b.size * 1.2 * 0.93 + KNOT.y) / 2} ${KNOT.x} ${KNOT.y}`}
           fill="none"
           stroke="#4A3A55"
           strokeWidth="1.8"
