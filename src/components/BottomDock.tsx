@@ -17,27 +17,32 @@ export const BottomDock: React.FC = () => {
   const [active, setActive] = useState<string | null>(null);
 
   useEffect(() => {
-    const onScroll = () => {
+    let raf = 0;
+    const update = () => {
+      raf = 0;
       const footer = document.querySelector("footer");
       const nearFooter = footer ? footer.getBoundingClientRect().top < window.innerHeight - 40 : false;
       setVisible(window.scrollY > window.innerHeight * 0.6 && !nearFooter);
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
 
-    const io = new IntersectionObserver(
-      (entries) =>
-        entries.forEach((e) => {
-          if (!e.isIntersecting) return;
-          const id = `#${e.target.id}`;
-          setActive(LINKS.some((l) => l.href === id) ? id : null);
-        }),
-      { rootMargin: "-45% 0px -50% 0px" }
-    );
-    document.querySelectorAll("main > section[id]").forEach((s) => io.observe(s));
+      // Active link = the last section whose top has passed the viewport midline.
+      const mid = window.innerHeight * 0.5;
+      let current: string | null = null;
+      document.querySelectorAll<HTMLElement>("main > section[id]").forEach((s) => {
+        const r = s.getBoundingClientRect();
+        if (r.top <= mid && r.bottom > mid) current = `#${s.id}`;
+      });
+      setActive(LINKS.some((l) => l.href === current) ? current : null);
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
     return () => {
       window.removeEventListener("scroll", onScroll);
-      io.disconnect();
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
     };
   }, []);
 
@@ -67,21 +72,15 @@ export const BottomDock: React.FC = () => {
                   {on && (
                     <motion.span
                       layoutId="dock-active"
-                      transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
+                      transition={{ type: "spring", bounce: 0, duration: 0.35 }}
                       className="absolute inset-0 rounded-full bg-ink"
                     >
                       <BurstMark className="absolute -top-2 -right-1 w-4 h-4" />
                     </motion.span>
                   )}
-                  <motion.span
-                    key={on ? "on" : "off"}
-                    initial={on ? { y: -4 } : false}
-                    animate={{ y: 0 }}
-                    transition={{ type: "spring", stiffness: 500, damping: 12 }}
-                    className="relative"
-                  >
+                  <span className="relative">
                     {l.label}
-                  </motion.span>
+                  </span>
                 </a>
               );
             })}
