@@ -83,6 +83,16 @@
 @keyframes marquee { to { transform: translateX(-50%); } }
 .anim-marquee { animation: marquee var(--marquee-duration, 40s) linear infinite; }
 
+@keyframes balloon-rise {
+  0% { transform: translate3d(0, 30%, 0); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translate3d(14px, -320px, 0); opacity: 0; }
+}
+.anim-balloon { animation: balloon-rise 12s linear infinite; }
+@keyframes sway { 0%, 100% { transform: rotate(-8deg); } 50% { transform: rotate(8deg); } }
+.anim-sway { animation: sway 2.4s ease-in-out infinite; }
+
 @keyframes wiggle {
   0%, 100% { transform: rotate(-6deg) scale(1); }
   50% { transform: rotate(6deg) scale(1.06); }

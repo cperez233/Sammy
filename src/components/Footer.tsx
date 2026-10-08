@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { WhatsAppIcon } from "./WhatsAppIcon";
 import { MapPin } from "lucide-react";
 import { BurstMark, Reveal, HeadingWords } from "./Reveal";
+import { FooterBalloons } from "./FooterBalloons";
 import { CtaButton } from "./CtaButton";
 import { invisibleSignature } from "../utils/signature";
 import { DEFAULT_WA, INSTAGRAM_URL, PHONE_DISPLAY } from "../lib/site";
@@ -115,5 +116,6 @@ export const Footer: React.FC = () => (
       </div>
     </div>
     <RisingWordmark />
+    <FooterBalloons />
   </footer>
 );
