@@ -5,7 +5,7 @@ import { CheckCheck, Send } from "lucide-react";
 import { Reveal, HeadingWords } from "./Reveal";
 import { WhatsAppIcon } from "./WhatsAppIcon";
 import { PACKAGES } from "./Packages";
-import { PHONE_DISPLAY, springSnappy, waLink } from "../lib/site";
+import { PHONE_DISPLAY, springSnappy, waLink, celebrateFrom } from "../lib/site";
 
 const PLANS = [...PACKAGES.map((p) => p.name), "Otra cosa"];
 const SECTORES = ["Bucaramanga", "Floridablanca", "Girón", "Piedecuesta", "Otro municipio cercano"];
@@ -187,6 +187,7 @@ export const WhatsAppComposer: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   variants={{ lift: { y: -2 } }}
+                  onClick={(e) => celebrateFrom(e.currentTarget)}
                   whileTap={{ scale: 0.97 }}
                   transition={springSnappy}
                   className="flex items-center justify-center gap-2 h-14 rounded-full bg-wa text-ink font-display font-bold text-[17px] hover:bg-[#1FB959] transition-colors"
@@ -198,8 +199,12 @@ export const WhatsAppComposer: React.FC = () => {
               </motion.div>
             </div>
           </div>
-          <p className="mt-5 text-center text-[14px] text-canvas/65">
-            Se abre WhatsApp con el mensaje listo. Nada se envía sin que lo confirmes.
+          <p className="mt-5 text-center text-[14px] leading-relaxed text-canvas/75">
+            Se abre WhatsApp con el mensaje listo y nada se envía sin que lo confirmes.
+            Usamos estos datos solo para tu cotización.{" "}
+            <a href="/privacidad" className="inline-block py-3 underline underline-offset-2 decoration-canvas/40 hover:text-canvas">
+              Política de datos
+            </a>
           </p>
           </div>
         </Reveal>

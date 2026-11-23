@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import { springSnappy } from "../lib/site";
+import { celebrateFrom, springSnappy } from "../lib/site";
 
 const canHover = () =>
   typeof window !== "undefined" && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
@@ -52,6 +52,9 @@ export const CtaButton: React.FC<{
         x.set(0);
         y.set(0);
       }}
+      onClick={(e) => {
+        if (href.includes("wa.me")) celebrateFrom(e.currentTarget);
+      }}
       whileTap={{ scale: 0.96 }}
       transition={springSnappy}
       className={`group relative isolate inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full border-[3px] font-display font-bold whitespace-nowrap transition-[box-shadow,background-color] duration-300 ${SIZES[size]} ${TONES[tone]} ${className}`}
@@ -59,6 +62,15 @@ export const CtaButton: React.FC<{
       <span
         aria-hidden="true"
         className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/3 -skew-x-12 bg-white/30 -translate-x-full transition-transform duration-700 ease-out group-hover:translate-x-[420%]"
+      />
+      {/* Touch twin: on phones the same sweep plays once when the button is fully on screen */}
+      <motion.span
+        aria-hidden="true"
+        initial={{ x: "0%" }}
+        whileInView={{ x: "560%" }}
+        viewport={{ once: true, amount: 1 }}
+        transition={{ duration: 0.9, delay: 0.25, ease: "easeOut" }}
+        className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3 -skew-x-12 bg-white/30 [@media(hover:hover)_and_(pointer:fine)]:hidden"
       />
       {children}
       {arrow && (

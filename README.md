@@ -22,12 +22,14 @@ Letras: Bricolage Grotesque para títulos (redondeada y alegre, sin verse como f
 
 Navegación: cabecera con logo y enlaces por sección en escritorio, y en el celular un dock abajo (Videos, Planes, Cotizar, FAQ y WhatsApp) que aparece después del hero.
 
+El estallido hace algo distinto en cada lugar: viaja en la punta de la serpentina de progreso, aterriza con rayos cuando el indicador de la navegación o del dock cambia de sección, revienta como globo en el hero, explota en el manifiesto, recorre el programa de la fiesta y gira en las preguntas. Los botones de WhatsApp lanzan confeti al tocarlos.
+
 ## 3. Secciones
 
 1. Hero: "Menos fiestas aburridas, más momentos que hacen BOOM." con las palabras subiendo una a una, un video real en un marco con capas, la tarjeta de precio ($200.000 por 3 horas) encima y un globo que revienta con confeti al tocarlo.
 2. Dos cintas en movimiento (36 px/s): servicios en una dirección y municipios en la otra.
 3. Manifiesto con scroll: "Fiestas aburridas" se tacha, la página se pone de noche y aparece "Hacemos BOOM".
-4. Videos: siete fiestas reales en polaroids (seis clips y una foto de personajes) que se abren en grande, y una tarjeta hacia Instagram.
+4. Videos: fiestas reales en polaroids (siete en escritorio, cinco en el celular; el visor recorre las siete) y una tarjeta hacia Instagram.
 5. Programa de las 3 horas en seis pasos, con un camino punteado que se dibuja al bajar.
 6. Planes y precios: selector de planes, boleta con el precio, adicionales y un "¿Otra cosa? Cuéntanos".
 7. Cotizador: plan, fecha, municipio, número de niños y cumpleañero, con el mensaje de WhatsApp a la vista antes de enviarlo.
@@ -43,8 +45,16 @@ Los videos están en `public/media/` (MP4 y WebM de respaldo, unos 7 MB en total
 - Con `prefers-reduced-motion` activo, `<MotionConfig reducedMotion="user">` quita el movimiento, el manifiesto se muestra en su cuadro final y los bucles de CSS se detienen.
 - Los bucles se pausan cuando su sección sale de la pantalla (`IntersectionObserver`).
 - Los efectos de hover solo se activan con mouse o trackpad (`hoverOnlyWhenSupported`), así un toque en el celular no deja estados pegados.
+- Cada efecto de hover tiene su versión táctil en el celular: el barrido de luz de los botones y el de los adicionales se activan al aparecer en pantalla.
 
-## 5. Cómo correrlo
+## 5. Antes de publicar
+
+- **Dominio.** El build toma el dominio de `SITE_URL` o, en Vercel, de `VERCEL_PROJECT_PRODUCTION_URL`. Si no encuentra ninguno usa `sammypartyboom.example` y lo avisa en amarillo en la terminal.
+- **Política de datos.** `/privacidad` se genera en `scripts/prerender.mjs`. Antes de lanzar hay que completar lo que está en amarillo: nombre o razón social con C.C. o NIT, un correo y el plazo de conservación.
+- **Testimonios.** Van en `src/data/testimonials.ts`, copiados tal cual de mensajes reales. Solo aparecen los que tengan `approved: true`, y la sección no se muestra mientras no haya ninguno.
+- **Cabeceras de seguridad.** Están en `vercel.json`. La CSP permite el script de respaldo de `index.html` por su hash; si se cambia ese script, hay que recalcular el hash.
+
+## 6. Cómo correrlo
 
 Requisitos: Node.js 18 o más reciente (20 o 22 recomendados) y npm 9 o más.
 

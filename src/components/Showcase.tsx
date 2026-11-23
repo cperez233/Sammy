@@ -32,8 +32,9 @@ const RATIO = { portrait: "aspect-[9/16]", landscape: "aspect-video", photo: "as
 const TAPES = ["bg-festive-yellow/90", "bg-festive-sky/85", "bg-accent/85", "bg-uva-light/90"];
 const TILTS = ["-rotate-[2.5deg]", "rotate-[2deg]", "-rotate-[1deg]", "rotate-[3deg]", "-rotate-[2deg]", "rotate-[1.5deg]", "-rotate-[3deg]"];
 // Hand-balanced columns (indexes into ITEMS, -1 = Instagram card) so no column ends early.
+// Phones and tablets show five cards to keep the scroll short; the viewer still walks all seven.
 const LAYOUTS = {
-  2: [[0, 2, 3, 4], [1, 5, 6, -1]],
+  2: [[0, 2, 3], [1, 5, -1]],
   3: [[0, 4, 2], [1, 3, -1], [5, 6]],
 };
 // Each column drifts as a whole: cards never pull apart or overlap.

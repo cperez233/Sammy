@@ -7,7 +7,7 @@ import { BurstMark } from "./Reveal";
 import { usePrefersReducedMotion } from "../lib/useReducedMotion";
 
 const Char: React.FC<{ c: string; p: MotionValue<number>; range: [number, number] }> = ({ c, p, range }) => {
-  const opacity = useTransform(p, range, [0.12, 1]);
+  const opacity = useTransform(p, range, [0.24, 1]);
   const y = useTransform(p, range, ["0.25em", "0em"]);
   return (
     <motion.span style={{ opacity, y }} className="inline-block">
@@ -115,7 +115,7 @@ export const Statement: React.FC = () => {
     <section
       ref={ref}
       aria-label="Nuestra forma de hacer fiestas"
-      className="relative h-[200vh]"
+      className="relative h-[170vh]"
     >
       <motion.div style={{ backgroundColor: bg }} className="sticky top-0 h-[100svh] overflow-hidden">
         <motion.div aria-hidden="true" style={{ opacity: dots }} className="absolute inset-0 confetti-field" />

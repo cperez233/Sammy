@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { WhatsAppIcon } from "./WhatsAppIcon";
+import { Testimonials } from "./Testimonials";
 import { Reveal, BurstMark, HeadingWords } from "./Reveal";
 import { PHONE_DISPLAY, ease, waLink } from "../lib/site";
 
@@ -57,6 +58,7 @@ export const FaqSection: React.FC = () => {
               ¿Otra pregunta? Escríbenos
             </span>
           </a>
+          <Testimonials />
         </Reveal>
 
         <Reveal delay={0.1}>

@@ -12,6 +12,7 @@ import { WhatsAppIcon } from "./WhatsAppIcon";
 import { ArrowUpRight } from "lucide-react";
 import { BurstMark } from "./Reveal";
 import { CtaButton } from "./CtaButton";
+import { Pow } from "./Pow";
 import {
   DEFAULT_WA,
   INSTAGRAM_URL,
@@ -88,6 +89,10 @@ export const Header: React.FC = () => {
   // Page progress line, revealed with a clip (rule 13)
   const progress = useSpring(scrollYProgress, { stiffness: 140, damping: 26 });
   const clip = useTransform(progress, (p) => `inset(0 ${100 - p * 100}% 0 0)`);
+  // The burst rides the tip of the streamer and spins as the page goes by (brand verb: travel)
+  const tipX = useTransform(progress, (p) => `${p * 100}vw`);
+  const tipRotate = useTransform(progress, [0, 1], [0, 1080]);
+  const tipOpacity = useTransform(progress, [0, 0.015, 0.985, 1], [0, 1, 1, 0]);
 
   // Mobile overlay: lock scroll, Esc closes, focus in and back
   useEffect(() => {
@@ -111,8 +116,15 @@ export const Header: React.FC = () => {
       <motion.div
         aria-hidden="true"
         style={{ clipPath: clip }}
-        className="fixed top-0 inset-x-0 z-[80] h-[3px] bg-[repeating-linear-gradient(90deg,#E63956_0_18px,#FFC93C_18px_36px,#7B3FC4_36px_54px)]"
+        className="fixed top-0 inset-x-0 z-[80] h-1 bg-[repeating-linear-gradient(90deg,#D42F4B_0_18px,#FFC93C_18px_36px,#7B3FC4_36px_54px,#5EC8F2_54px_72px)]"
       />
+      <motion.div
+        aria-hidden="true"
+        style={{ x: tipX, rotate: tipRotate, opacity: tipOpacity }}
+        className="fixed z-[80] top-[-5px] left-[-9px] w-[18px] h-[18px] pointer-events-none"
+      >
+        <BurstMark className="w-full h-full" />
+      </motion.div>
 
       <header className="fixed top-0 inset-x-0 z-[70] pointer-events-none">
         <motion.div
@@ -188,7 +200,17 @@ export const Header: React.FC = () => {
                           transition={{ type: "spring", bounce: 0.25, duration: 0.55 }}
                           className="absolute inset-0 rounded-full bg-ink shadow-[0_6px_14px_-6px_rgba(34,20,43,.6)]"
                         >
-                          <BurstMark className="absolute -top-2 -right-1.5 w-4 h-4" />
+                          {/* Lands with a "¡pum!" each time the section changes (brand verb: land) */}
+                          <Pow key={l.href} />
+                          <motion.span
+                            key={`b-${l.href}`}
+                            initial={{ rotate: -140, scale: 0.3 }}
+                            animate={{ rotate: 0, scale: 1 }}
+                            transition={{ type: "spring", stiffness: 300, damping: 12, delay: 0.2 }}
+                            className="absolute -top-2.5 -right-2 w-5 h-5"
+                          >
+                            <BurstMark className="w-full h-full" />
+                          </motion.span>
                         </motion.span>
                       )}
                       <span className="relative">{l.label}</span>

@@ -138,8 +138,13 @@ const PriceStamp: React.FC<{ idx: number }> = ({ idx }) => (
  * seen wait in the pile on the left and the ones still to come in the pile on
  * the right, so a ticket always leaves toward, and arrives from, its own pile.
  */
+const PHONE_INCLUDES = 4;
+
 const Ticket: React.FC<{ pkg: PackageInfo; pos: number; onSwipe: (d: 1 | -1) => void }> = ({ pkg, pos, onSwipe }) => {
   const on = pos === 0;
+  // Phones show the first four items and a door to the rest, so the tallest ticket stops setting the height
+  const [all, setAll] = useState(false);
+  const extra = pkg.includes.length - PHONE_INCLUDES;
   return (
   <motion.article
     id={`plan-${pkg.id}`}
@@ -200,7 +205,9 @@ const Ticket: React.FC<{ pkg: PackageInfo; pos: number; onSwipe: (d: 1 | -1) => 
               initial={false}
               animate={on ? { opacity: [0, 1], y: [10, 0] } : { opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: on ? 0.15 + i * 0.05 : 0, ease }}
-              className="flex items-start gap-3 text-[16px] text-ink"
+              className={`flex items-start gap-3 text-[16px] text-ink ${
+                !all && i >= PHONE_INCLUDES ? "max-sm:hidden" : ""
+              }`}
             >
               <motion.span
                 initial={false}
@@ -214,6 +221,16 @@ const Ticket: React.FC<{ pkg: PackageInfo; pos: number; onSwipe: (d: 1 | -1) => 
             </motion.li>
           ))}
         </ul>
+        {extra > 0 && !all && (
+          <button
+            type="button"
+            onClick={() => setAll(true)}
+            tabIndex={on ? 0 : -1}
+            className="sm:hidden mt-3 inline-flex items-center h-11 text-[15px] font-semibold text-accent underline decoration-2 underline-offset-4 decoration-accent/30"
+          >
+            Ver {extra} más
+          </button>
+        )}
 
         <p className="mt-7 flex items-start gap-2.5 text-[15px] text-ink-soft border-t border-ink/10 pt-5">
           <Info className="w-[18px] h-[18px] mt-0.5 text-accent shrink-0" aria-hidden="true" />
@@ -316,9 +333,9 @@ export const Packages: React.FC = () => {
             <HeadingWords text="¿Cuánto cuesta animar una fiesta infantil?" />
           </h2>
           <p className="mt-4 text-[17px] text-ink-soft leading-relaxed max-w-2xl">
-            El plan más pedido, animación con sonido por 3 horas, vale desde $200.000 en
-            Bucaramanga. El valor final depende de la duración, la cantidad de niños y el
-            sector; te lo confirmamos por WhatsApp antes de reservar.
+            El más pedido, animación con sonido por 3 horas, vale desde $200.000. El valor
+            final depende de la cantidad de niños y el sector, y te lo confirmamos por
+            WhatsApp antes de reservar.
           </p>
         </Reveal>
 
@@ -422,9 +439,26 @@ export const Packages: React.FC = () => {
           <Reveal delay={0.1}>
             <ul className="border-t-2 border-ink">
               {EXTRAS.map((x) => (
-                <li key={x.title} className="group relative isolate flex items-center gap-4 sm:gap-6 py-5 px-2 border-b border-ink/15">
+                <li key={x.title} className="group relative isolate flex items-center gap-4 sm:gap-6 py-4 sm:py-5 px-2 border-b border-ink/15">
                   <span aria-hidden="true" className="absolute inset-0 -z-10 origin-left scale-x-0 bg-festive-yellow/45 transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-x-100" />
-                  <BurstMark className="w-8 h-8 shrink-0 transition-transform duration-500 group-hover:rotate-[72deg] group-hover:scale-110" />
+                  {/* Touch twin: the highlight sweeps through once when the row reaches the middle of the screen */}
+                  <motion.span
+                    aria-hidden="true"
+                    initial={{ scaleX: 0, opacity: 1 }}
+                    whileInView={{ scaleX: [0, 1, 1], opacity: [1, 1, 0] }}
+                    viewport={{ once: true, margin: "-35% 0px -35% 0px" }}
+                    transition={{ duration: 1.5, times: [0, 0.4, 1], ease }}
+                    className="absolute inset-0 -z-10 origin-left bg-festive-yellow/45 [@media(hover:hover)_and_(pointer:fine)]:hidden"
+                  />
+                  <motion.span
+                    initial={{ rotate: 0 }}
+                    whileInView={{ rotate: 72 }}
+                    viewport={{ once: true, margin: "-35% 0px -35% 0px" }}
+                    transition={{ type: "spring", stiffness: 200, damping: 12 }}
+                    className="shrink-0 self-center"
+                  >
+                    <BurstMark className="w-8 h-8 transition-transform duration-500 group-hover:rotate-[72deg] group-hover:scale-110" />
+                  </motion.span>
                   <div className="flex-1 min-w-0 transition-transform duration-500 group-hover:translate-x-1.5">
                     <p className="font-display font-bold text-[19px] sm:text-[21px] leading-tight">{x.title}</p>
                     <p className="text-[15px] sm:text-[16px] text-ink-soft mt-0.5">{x.desc}</p>
@@ -436,7 +470,7 @@ export const Packages: React.FC = () => {
                   href={waLink("Hola Sammy Partyboom, tengo una idea para una fiesta y quiero saber si la pueden hacer.")}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group relative isolate flex items-center gap-4 sm:gap-6 py-5 px-2 border-b-2 border-ink"
+                  className="group relative isolate flex items-center gap-4 sm:gap-6 py-4 sm:py-5 px-2 border-b-2 border-ink"
                 >
                   <span aria-hidden="true" className="absolute inset-0 -z-10 origin-left scale-x-0 bg-accent-light transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-x-100" />
                   <span className="grid place-items-center w-8 h-8 rounded-full bg-accent text-white shrink-0">

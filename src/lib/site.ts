@@ -12,6 +12,29 @@ export const DEFAULT_WA = waLink(
   "Hola Sammy Partyboom, quiero cotizar una fiesta infantil en Bucaramanga."
 );
 
+/**
+ * The WhatsApp buttons throw confetti from where they were tapped: the party
+ * starts at the moment someone writes (brand verb for the main action).
+ * Loaded on demand so the confetti code never weighs on the first paint.
+ */
+export function celebrateFrom(el: HTMLElement) {
+  if (typeof window === "undefined") return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const r = el.getBoundingClientRect();
+  import("canvas-confetti").then(({ default: confetti }) =>
+    confetti({
+      particleCount: 42,
+      spread: 75,
+      startVelocity: 28,
+      scalar: 0.8,
+      ticks: 120,
+      zIndex: 60,
+      colors: ["#D42F4B", "#FFC93C", "#7B3FC4", "#5EC8F2", "#25D366"],
+      origin: { x: (r.left + r.width / 2) / innerWidth, y: (r.top + r.height / 2) / innerHeight },
+    })
+  );
+}
+
 /** One timing system for the whole site. */
 export const ease = [0.22, 1, 0.36, 1] as const;
 export const easeInOut = [0.76, 0, 0.24, 1] as const;
