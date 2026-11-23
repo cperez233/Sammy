@@ -36,6 +36,7 @@ const Balloon: React.FC<{ b: B }> = ({ b }) => {
         colors: CONFETTI,
         origin: { x: (r.left + r.width / 2) / innerWidth, y: (r.top + r.height / 2) / innerHeight },
         disableForReducedMotion: true,
+        zIndex: 60,
       });
     t.current = window.setTimeout(() => setPopped(false), 1800);
   };

@@ -397,7 +397,7 @@ export const Packages: React.FC = () => {
                   {PACKAGES.map((p, i) => (
                     <motion.span
                       key={p.id}
-                      animate={{ width: i === idx ? 28 : 8, backgroundColor: i === idx ? "#E63956" : "rgba(34,20,43,.25)" }}
+                      animate={{ width: i === idx ? 28 : 8, backgroundColor: i === idx ? "#D42F4B" : "rgba(34,20,43,.25)" }}
                       transition={{ type: "spring", bounce: 0, duration: 0.35 }}
                       className="h-2 rounded-full"
                     />

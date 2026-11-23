@@ -119,7 +119,7 @@ export const Header: React.FC = () => {
           initial={{ y: -40, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, ease }}
-          className={`max-w-6xl mx-auto px-3 sm:px-6 flex items-center justify-between gap-4 transition-[padding] duration-500 ${
+          className={`max-w-6xl mx-auto px-3 sm:px-6 flex items-center justify-between gap-2 sm:gap-4 transition-[padding] duration-500 ${
             compact ? "pt-2.5" : "pt-3 sm:pt-5"
           }`}
         >
@@ -127,8 +127,8 @@ export const Header: React.FC = () => {
           <a
             href="#inicio"
             aria-label="Sammy Partyboom, volver al inicio"
-            className={`group pointer-events-auto flex items-center gap-2.5 h-14 pl-1.5 pr-4 rounded-full transition-[background-color,box-shadow,border-color] duration-500 border-2 ${
-              compact ? "bg-canvas/90 backdrop-blur-md border-ink shadow-raised" : "border-transparent"
+            className={`group pointer-events-auto flex min-w-0 items-center gap-2 sm:gap-2.5 h-14 pl-1.5 pr-3.5 sm:pr-4 rounded-full transition-[background-color,box-shadow,border-color] duration-500 border-2 ${
+              compact || open ? "bg-canvas border-ink shadow-pop" : "border-transparent"
             }`}
           >
             <span className="relative grid place-items-center w-11 h-11 shrink-0">
@@ -143,7 +143,7 @@ export const Header: React.FC = () => {
                 className="relative w-11 h-11 rounded-full ring-2 ring-white shadow-resting transition-transform duration-500 group-hover:rotate-[-10deg] group-hover:scale-95"
               />
             </span>
-            <span className="leading-none font-display font-extrabold text-[17px] sm:text-[18px] tracking-tight whitespace-nowrap">
+            <span className="leading-none font-display font-extrabold text-[16px] min-[380px]:text-[17px] sm:text-[18px] tracking-tight whitespace-nowrap">
               <span className="sr-only">Sammy Partyboom</span>
               <RollWord text="Sammy" />{" "}
               <RollWord text="Partyboom" className="text-accent" />
@@ -161,7 +161,7 @@ export const Header: React.FC = () => {
                 exit={{ y: -24, opacity: 0, scale: 0.96 }}
                 transition={{ type: "spring", bounce: 0, duration: 0.45 }}
                 onMouseLeave={() => setHover(null)}
-                className="hidden lg:flex pointer-events-auto items-center gap-0.5 p-1.5 rounded-full bg-canvas/90 backdrop-blur-md border-2 border-ink shadow-pop"
+                className="hidden lg:flex pointer-events-auto items-center gap-0.5 p-1.5 rounded-full bg-canvas border-2 border-ink shadow-pop"
               >
                 {NAV_LINKS.map((l) => {
                   const isActive = active === l.href;
@@ -212,11 +212,16 @@ export const Header: React.FC = () => {
               onClick={() => setOpen((o) => !o)}
               aria-expanded={open}
               aria-controls="menu-movil"
-              className={`lg:hidden relative inline-flex items-center gap-2.5 h-12 pl-4 pr-3.5 rounded-full border-2 border-ink font-semibold text-[15px] transition-colors duration-300 ${
-                open ? "bg-festive-yellow text-ink" : "bg-ink text-canvas shadow-raised ring-2 ring-canvas/25"
+              aria-label={open ? "Cerrar menú" : "Abrir menú"}
+              className={`lg:hidden relative shrink-0 inline-flex items-center justify-center gap-2.5 h-12 min-w-12 px-3.5 min-[380px]:pl-4 rounded-full border-2 border-ink font-semibold text-[15px] transition-[background-color,color,box-shadow] duration-300 active:scale-[.97] ${
+                open
+                  ? "bg-festive-yellow text-ink shadow-pop"
+                  : compact
+                    ? "bg-canvas text-ink shadow-pop"
+                    : "bg-ink text-canvas shadow-raised"
               }`}
             >
-              {open ? "Cerrar" : "Menú"}
+              <span aria-hidden="true" className="hidden min-[380px]:inline">{open ? "Cerrar" : "Menú"}</span>
               <span aria-hidden="true" className="relative w-5 h-3.5">
                 <motion.span
                   animate={open ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}

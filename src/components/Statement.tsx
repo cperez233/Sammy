@@ -89,7 +89,7 @@ export const Statement: React.FC = () => {
   useMotionValueEvent(p, "change", (v) => {
     if (v > 0.72 && !fired.current) {
       fired.current = true;
-      const o = { colors: ["#E63956", "#FFC93C", "#7B3FC4", "#5EC8F2", "#FBF6EE"], disableForReducedMotion: true };
+      const o = { colors: ["#E63956", "#FFC93C", "#7B3FC4", "#5EC8F2", "#FBF6EE"], disableForReducedMotion: true, zIndex: 60 };
       confetti({ ...o, particleCount: 90, angle: 60, spread: 70, startVelocity: 55, origin: { x: 0, y: 0.75 } });
       confetti({ ...o, particleCount: 90, angle: 120, spread: 70, startVelocity: 55, origin: { x: 1, y: 0.75 } });
     }

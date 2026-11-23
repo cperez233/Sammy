@@ -36,7 +36,8 @@ const RisingWordmark: React.FC = () => {
 
 export const Footer: React.FC = () => (
   <footer className="relative -mt-8 rounded-t-[36px] sm:rounded-t-[48px] bg-ink text-canvas pt-16 sm:pt-24 pb-24 lg:pb-0 px-4 sm:px-6 overflow-hidden">
-    <div className="max-w-6xl mx-auto">
+    {/* Content sits above the balloons (rule 62): they drift behind the text and never block a link */}
+    <div className="relative z-10 max-w-6xl mx-auto">
       {/* Closing call */}
       <div className="grid gap-10 lg:grid-cols-[1fr_auto] items-center pb-14 sm:pb-20 border-b border-canvas/15">
         <Reveal>

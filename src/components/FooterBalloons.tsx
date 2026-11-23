@@ -34,7 +34,7 @@ export const FooterBalloons: React.FC = () => {
   };
 
   return (
-    <div className="absolute inset-x-0 bottom-0 h-[70%] pointer-events-none z-10">
+    <div className="absolute inset-x-0 bottom-0 h-[70%] pointer-events-none z-[5]">
       {BALLOONS.map((b, i) => (
         <div key={i} className="absolute bottom-0" style={{ left: b.left }}>
           <div key={gen[i]} className="anim-balloon" style={{ animationDelay: gen[i] ? "0s" : b.delay, animationDuration: b.dur }}>

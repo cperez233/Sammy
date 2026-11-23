@@ -16,7 +16,8 @@ export default {
           muted: "#6E5E79",
           faint: "#A193AA",
         },
-        accent: { DEFAULT: "#E63956", hover: "#CC2645", light: "#FDECEF" },
+        // #D42F4B: the logo magenta a shade deeper so white text on it and it on cream pass WCAG AA
+        accent: { DEFAULT: "#D42F4B", hover: "#B8243F", light: "#FDECEF" },
         uva: { DEFAULT: "#7B3FC4", deep: "#2E1745", light: "#EEE3FB" },
         festive: {
           yellow: "#FFC93C",
@@ -25,7 +26,7 @@ export default {
           orange: "#FF8A3D",
           sky: "#5EC8F2",
         },
-        wa: { DEFAULT: "#25D366", deep: "#128C7E", bubble: "#DCF8C6", chat: "#EFE7DD" },
+        wa: { DEFAULT: "#25D366", deep: "#075E54", bubble: "#DCF8C6", chat: "#EFE7DD" },
       },
       fontFamily: {
         display: ['"Bricolage Grotesque"', "ui-rounded", "system-ui", "sans-serif"],

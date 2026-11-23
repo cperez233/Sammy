@@ -81,8 +81,8 @@ export const BottomDock: React.FC = () => {
           transition={{ type: "spring", bounce: 0, duration: 0.45 }}
           className="lg:hidden fixed inset-x-0 bottom-0 z-50 px-3 pb-[max(12px,env(safe-area-inset-bottom))] pointer-events-none"
         >
-          <div className="pointer-events-auto mx-auto max-w-md flex items-center gap-1 p-1.5 rounded-full bg-canvas border-[3px] border-ink shadow-floating">
-            <div className="relative flex items-center" style={{ flex: LINKS.length }}>
+          <div className="pointer-events-auto mx-auto max-w-md flex items-center gap-1.5 p-1.5 rounded-full bg-canvas border-[3px] border-ink shadow-floating">
+            <div className="relative flex flex-1 min-w-0 items-center">
               <motion.span
                 aria-hidden="true"
                 initial={false}
@@ -101,7 +101,7 @@ export const BottomDock: React.FC = () => {
                     href={l.href}
                     onClick={(e) => go(e, l.href)}
                     aria-current={on ? "true" : undefined}
-                    className={`relative flex-1 grid place-items-center h-11 rounded-full text-[14px] sm:text-[15px] font-semibold transition-colors duration-200 ${
+                    className={`relative flex-1 min-w-0 grid place-items-center h-11 rounded-full text-[14px] sm:text-[15px] font-semibold whitespace-nowrap transition-colors duration-200 ${
                       on ? "text-canvas" : "text-ink"
                     }`}
                   >
@@ -116,10 +116,11 @@ export const BottomDock: React.FC = () => {
               rel="noopener noreferrer"
               whileTap={{ scale: 0.95 }}
               transition={springSnappy}
-              className="flex-[1.4] inline-flex items-center justify-center gap-1.5 h-11 rounded-full bg-accent text-white font-display font-bold text-[15px]"
+              aria-label="Escribir por WhatsApp"
+              className="shrink-0 inline-flex items-center justify-center gap-1.5 h-11 w-11 min-[380px]:w-auto min-[380px]:px-3.5 rounded-full bg-accent text-white font-display font-bold text-[15px] whitespace-nowrap"
             >
-              <WhatsAppIcon className="w-4 h-4" />
-              WhatsApp
+              <WhatsAppIcon className="w-[18px] h-[18px] shrink-0" />
+              <span aria-hidden="true" className="hidden min-[380px]:inline">WhatsApp</span>
             </motion.a>
           </div>
         </motion.nav>

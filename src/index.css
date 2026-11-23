@@ -33,7 +33,7 @@
   }
   p { text-wrap: pretty; }
   :focus-visible {
-    outline: 3px solid #E63956;
+    outline: 3px solid #D42F4B;
     outline-offset: 3px;
     border-radius: 12px;
   }

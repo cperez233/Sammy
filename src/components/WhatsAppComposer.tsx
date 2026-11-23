@@ -156,7 +156,7 @@ export const WhatsAppComposer: React.FC = () => {
                 <img src="/images/logo-sammy.webp" alt="" width={40} height={40} className="w-10 h-10 rounded-full bg-white" />
                 <div className="leading-tight">
                   <p className="font-semibold text-[16px]">Sammy Partyboom</p>
-                  <p className="text-[13px] text-white/75">{PHONE_DISPLAY}</p>
+                  <p className="text-[13px] text-white/85">{PHONE_DISPLAY}</p>
                 </div>
               </div>
 
@@ -175,7 +175,7 @@ export const WhatsAppComposer: React.FC = () => {
                   >
                     {message}
                   </motion.p>
-                  <span className="flex items-center justify-end gap-1 mt-1 text-[12px] text-[#667781]">
+                  <span className="flex items-center justify-end gap-1 mt-1 text-[12px] text-[#54656F]">
                     ahora <CheckCheck className="w-4 h-4 text-[#53BDEB]" aria-hidden="true" />
                   </span>
                 </motion.div>
@@ -189,7 +189,7 @@ export const WhatsAppComposer: React.FC = () => {
                   variants={{ lift: { y: -2 } }}
                   whileTap={{ scale: 0.97 }}
                   transition={springSnappy}
-                  className="flex items-center justify-center gap-2 h-14 rounded-full bg-wa text-white font-display font-bold text-[17px] hover:bg-[#1FB959] transition-colors"
+                  className="flex items-center justify-center gap-2 h-14 rounded-full bg-wa text-ink font-display font-bold text-[17px] hover:bg-[#1FB959] transition-colors"
                 >
                   <WhatsAppIcon className="w-5 h-5" />
                   Enviar por WhatsApp

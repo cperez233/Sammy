@@ -283,7 +283,7 @@ export const Showcase: React.FC = () => {
                       className="relative block rounded-[16px] bg-accent text-white p-5 sm:p-7 border-[3px] border-canvas shadow-[0_30px_60px_-24px_rgba(0,0,0,.75)]"
                     >
                       <BurstMark className="w-12 h-12 sm:w-16 sm:h-16 transition-transform duration-500 group-hover:rotate-[72deg] group-hover:scale-110" />
-                      <p className="mt-6 text-[14px] sm:text-[15px] font-semibold text-white/85">Síguenos para ver más</p>
+                      <p className="mt-6 text-[14px] sm:text-[15px] font-semibold text-white">Síguenos para ver más</p>
                       <p className="font-display font-extrabold text-[15px] xs:text-[17px] sm:text-[30px] leading-[1.05] tracking-tight mt-1">
                         @sammypartyboom
                       </p>
