@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
 import { ArrowLeft, ArrowRight, ArrowUpRight, Maximize2, X } from "lucide-react";
 import { LoopVideo } from "./LoopVideo";
-import { Reveal, SectionLabel, BurstMark, HeadingWords } from "./Reveal";
+import { Reveal, BurstMark, HeadingWords } from "./Reveal";
 import { CtaButton } from "./CtaButton";
 import { WhatsAppIcon } from "./WhatsAppIcon";
 import { INSTAGRAM_URL, ease, waLink } from "../lib/site";
@@ -86,13 +86,13 @@ const Polaroid: React.FC<{ item: Item; i: number; onOpen: () => void }> = ({ ite
       whileInView={{ opacity: 1, y: 0, rotate: 0 }}
       viewport={{ once: true, margin: "0px 0px -8% 0px" }}
       transition={{ duration: 0.9, delay: (i % 3) * 0.08, ease }}
-      className="relative"
+      className="group/card relative"
     >
       <button
         type="button"
         onClick={onOpen}
         aria-label={`Ver en grande: ${item.title}`}
-        className={`group relative block w-full text-left bg-canvas text-ink rounded-[16px] p-2 sm:p-2.5 pb-3.5 shadow-[0_30px_60px_-24px_rgba(0,0,0,.75)] transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] hover:rotate-0 hover:-translate-y-2 hover:scale-[1.03] ${TILTS[i % TILTS.length]}`}
+        className={`group relative block w-full text-left bg-canvas text-ink rounded-[16px] p-2 sm:p-2.5 pb-3.5 shadow-[0_30px_60px_-24px_rgba(0,0,0,.75)] transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover/card:rotate-0 group-hover/card:-translate-y-2 group-hover/card:scale-[1.03] ${TILTS[i % TILTS.length]}`}
       >
         <span
           aria-hidden="true"
@@ -249,7 +249,6 @@ export const Showcase: React.FC = () => {
       <div className="relative max-w-6xl mx-auto">
         <div className="grid gap-8 lg:grid-cols-[1.2fr_1fr] items-end mb-14 sm:mb-20">
           <Reveal>
-            <SectionLabel tone="light">Fiestas reales, sin filtros</SectionLabel>
             <h2 className="font-display font-extrabold text-[clamp(2.4rem,7vw,4.6rem)] leading-[0.98] tracking-[-0.035em]">
               <HeadingWords text="Así se ve una fiesta con" />{" "}
               <HeadingWords text="Sammy" className="text-festive-yellow" delay={0.25} />
@@ -257,8 +256,8 @@ export const Showcase: React.FC = () => {
           </Reveal>
           <Reveal delay={0.1}>
             <p className="text-[17px] sm:text-[18px] text-canvas/75 leading-relaxed max-w-[30rem]">
-              Videos grabados por nosotros en salones, casas y calles de Bucaramanga. Nada de
-              fotos de banco. Toca cualquiera para verla en grande.
+              Son videos que grabamos nosotros en salones, casas y calles de Bucaramanga.
+              Toca uno para verlo en grande.
             </p>
           </Reveal>
         </div>
@@ -270,6 +269,8 @@ export const Showcase: React.FC = () => {
                 i === -1 ? (
                   /* Door to Instagram, pinned like one more card */
                   <div key="instagram" className="pb-8">
+                    {/* Rule 58: the wrapper never moves, so the lift can't push the card out from under the pointer */}
+                    <motion.div whileHover="lift" className="group">
                     <motion.a
                       href={INSTAGRAM_URL}
                       target="_blank"
@@ -278,8 +279,8 @@ export const Showcase: React.FC = () => {
                       whileInView={{ opacity: 1, y: 0, rotate: 2 }}
                       viewport={{ once: true }}
                       transition={{ duration: 0.9, ease }}
-                      whileHover={{ rotate: 0, y: -6 }}
-                      className="group relative block rounded-[16px] bg-accent text-white p-5 sm:p-7 border-[3px] border-canvas shadow-[0_30px_60px_-24px_rgba(0,0,0,.75)]"
+                      variants={{ lift: { rotate: 0, y: -6 } }}
+                      className="relative block rounded-[16px] bg-accent text-white p-5 sm:p-7 border-[3px] border-canvas shadow-[0_30px_60px_-24px_rgba(0,0,0,.75)]"
                     >
                       <BurstMark className="w-12 h-12 sm:w-16 sm:h-16 transition-transform duration-500 group-hover:rotate-[72deg] group-hover:scale-110" />
                       <p className="mt-6 text-[14px] sm:text-[15px] font-semibold text-white/85">Síguenos para ver más</p>
@@ -291,6 +292,7 @@ export const Showcase: React.FC = () => {
                         <ArrowUpRight className="w-5 h-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
                       </span>
                     </motion.a>
+                    </motion.div>
                   </div>
                 ) : (
                   <Polaroid

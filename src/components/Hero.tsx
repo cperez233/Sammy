@@ -163,9 +163,8 @@ export const Hero: React.FC = () => {
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease }}
-              className="flex items-center gap-2 font-sans font-semibold text-[16px] sm:text-[17px] text-ink/85 mb-4 sm:mb-6"
+              className="block font-sans font-semibold text-[16px] sm:text-[17px] text-ink/85 mb-4 sm:mb-6"
             >
-              <span className="inline-block w-6 h-[3px] rounded-full bg-accent" aria-hidden="true" />
               Animación y recreación de fiestas infantiles en Bucaramanga
             </motion.span>{" "}
             <span className="block font-extrabold tracking-[-0.035em] leading-[1.0] text-[clamp(2.7rem,9.8vw,4.9rem)]">
@@ -298,7 +297,7 @@ export const Hero: React.FC = () => {
           transition={{ duration: 0.8, delay: 0.65, ease }}
           className="[grid-area:actions] lg:self-start"
         >
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3">
             <CtaButton href={DEFAULT_WA} external>
               <WhatsAppIcon className="w-5 h-5" />
               Cotizar mi fecha por WhatsApp

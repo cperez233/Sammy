@@ -1,7 +1,7 @@
 /* editorial-ui · Cristian Pérez · cristianperez.me */
 import React, { useRef, useState } from "react";
 import { motion, useMotionValueEvent, useScroll, useSpring, useTransform } from "framer-motion";
-import { Reveal, SectionLabel, BurstMark, HeadingWords } from "./Reveal";
+import { Reveal, BurstMark, HeadingWords } from "./Reveal";
 import { ease } from "../lib/site";
 
 const STEPS = [
@@ -36,8 +36,7 @@ export const HowItGoes: React.FC = () => {
     >
       <div className="max-w-6xl mx-auto">
         <Reveal className="max-w-3xl">
-          <SectionLabel>El programa de la fiesta</SectionLabel>
-          <h2 className="font-display font-extrabold text-[clamp(2.2rem,6vw,3.8rem)] leading-[1.02] tracking-[-0.03em]">
+          <h2 className="font-display font-extrabold text-[clamp(2.2rem,6vw,3.8rem)] leading-[1.06] tracking-[-0.03em]">
             <HeadingWords text="¿Qué pasa en las 3 horas de animación?" />
           </h2>
           <p className="mt-4 text-[17px] text-ink-soft leading-relaxed max-w-2xl">

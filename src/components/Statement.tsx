@@ -43,7 +43,7 @@ const RAYS = [0, 40, 80, 120, 160, 200, 240, 280, 320];
 
 /**
  * The brand manifesto as a pinned scroll scene (storytelling bridge between
- * the promise and the proof): "fiestas" gets crossed out, the page turns to
+ * the promise and the proof): "aburridas" gets crossed out, the page turns to
  * night and BOOM explodes. Under reduced motion it renders the final frame.
  */
 export const Statement: React.FC = () => {
@@ -101,7 +101,7 @@ export const Statement: React.FC = () => {
       <section aria-label="Nuestra forma de hacer fiestas" className="bg-ink text-canvas px-4 sm:px-6 py-24">
         <div className="max-w-6xl mx-auto font-display font-extrabold tracking-[-0.04em] leading-[0.95]">
           <p className="text-[clamp(1.8rem,5vw,3.5rem)] text-canvas/45">
-            No hacemos <span className="line-through decoration-accent decoration-[6px]">fiestas.</span>
+            Fiestas <span className="line-through decoration-accent decoration-[6px]">aburridas.</span>
           </p>
           <p className="mt-3 text-[clamp(3.2rem,13vw,10rem)]">
             Hacemos <span className="text-accent">BOOM.</span>
@@ -121,7 +121,7 @@ export const Statement: React.FC = () => {
         <motion.div aria-hidden="true" style={{ opacity: dots }} className="absolute inset-0 confetti-field" />
 
         <div className="relative h-full max-w-6xl mx-auto px-4 sm:px-6 flex flex-col justify-center">
-          <p className="sr-only">No hacemos fiestas. Hacemos BOOM.</p>
+          <p className="sr-only">Fiestas aburridas, tachado. Hacemos BOOM.</p>
 
           {/* Line 1: lights up, then gets crossed out and steps back */}
           <motion.p
@@ -129,9 +129,9 @@ export const Statement: React.FC = () => {
             style={{ color: line1Color, scale: line1Scale, y: line1Y }}
             className="origin-left font-display font-extrabold tracking-[-0.045em] leading-[0.95] text-[clamp(3rem,11.5vw,9rem)]"
           >
-            <LitWords text="No hacemos" p={p} from={0.02} to={0.16} />{" "}
+            <LitWords text="Fiestas" p={p} from={0.02} to={0.12} />{" "}
             <span className="relative inline-block whitespace-nowrap">
-              <LitWords text="fiestas." p={p} from={0.14} to={0.26} />
+              <LitWords text="aburridas." p={p} from={0.1} to={0.26} />
               <svg viewBox="0 0 300 60" preserveAspectRatio="none" className="absolute left-[-4%] top-[38%] w-[108%] h-[0.42em] overflow-visible">
                 <motion.path
                   d="M6 38 C 60 18, 110 50, 160 28 S 250 14, 296 30"

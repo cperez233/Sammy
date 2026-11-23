@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { WhatsAppIcon } from "./WhatsAppIcon";
 import { Check, Clock, ArrowUpRight, ArrowLeft, ArrowRight, Info } from "lucide-react";
-import { Reveal, SectionLabel, BurstMark, HeadingWords } from "./Reveal";
+import { Reveal, BurstMark, HeadingWords } from "./Reveal";
 import { CtaButton } from "./CtaButton";
 import { ease, waLink } from "../lib/site";
 
@@ -85,7 +85,7 @@ export const PACKAGES: PackageInfo[] = [
     name: "Paquete FULL",
     short: "Paquete FULL",
     badge: "Todo en uno",
-    summary: "Animación, sonido propio y decoración para que no te preocupes por nada.",
+    summary: "Animación, sonido propio y decoración temática en un solo paquete.",
     duration: "3 horas de show",
     price: null,
     priceNote: "Cotización según temática, fecha y ubicación.",
@@ -312,8 +312,7 @@ export const Packages: React.FC = () => {
     >
       <div className="max-w-6xl mx-auto">
         <Reveal className="max-w-3xl">
-          <SectionLabel>Planes y precios, sin letra pequeña</SectionLabel>
-          <h2 className="font-display font-extrabold text-[clamp(2.2rem,6vw,3.8rem)] leading-[1.02] tracking-[-0.03em]">
+          <h2 className="font-display font-extrabold text-[clamp(2.2rem,6vw,3.8rem)] leading-[1.06] tracking-[-0.03em]">
             <HeadingWords text="¿Cuánto cuesta animar una fiesta infantil?" />
           </h2>
           <p className="mt-4 text-[17px] text-ink-soft leading-relaxed max-w-2xl">

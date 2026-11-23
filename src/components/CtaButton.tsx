@@ -54,7 +54,7 @@ export const CtaButton: React.FC<{
       }}
       whileTap={{ scale: 0.96 }}
       transition={springSnappy}
-      className={`group relative isolate inline-flex items-center justify-center overflow-hidden rounded-full border-[3px] font-display font-bold whitespace-nowrap transition-[box-shadow,background-color] duration-300 ${SIZES[size]} ${TONES[tone]} ${className}`}
+      className={`group relative isolate inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full border-[3px] font-display font-bold whitespace-nowrap transition-[box-shadow,background-color] duration-300 ${SIZES[size]} ${TONES[tone]} ${className}`}
     >
       <span
         aria-hidden="true"

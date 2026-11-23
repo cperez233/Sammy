@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { WhatsAppIcon } from "./WhatsAppIcon";
-import { Reveal, SectionLabel, BurstMark, HeadingWords } from "./Reveal";
+import { Reveal, BurstMark, HeadingWords } from "./Reveal";
 import { PHONE_DISPLAY, ease, waLink } from "../lib/site";
 
 const FAQS = [
@@ -43,8 +43,7 @@ export const FaqSection: React.FC = () => {
     >
       <div className="max-w-6xl mx-auto grid gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
         <Reveal className="lg:sticky lg:top-28 self-start">
-          <SectionLabel>Preguntas frecuentes</SectionLabel>
-          <h2 className="font-display font-extrabold text-[clamp(2.2rem,6vw,3.8rem)] leading-[1.02] tracking-[-0.03em]">
+          <h2 className="font-display font-extrabold text-[clamp(2.2rem,6vw,3.8rem)] leading-[1.06] tracking-[-0.03em]">
             <HeadingWords text="Lo que los papás preguntan antes de reservar" />
           </h2>
           <a

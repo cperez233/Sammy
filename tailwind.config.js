@@ -2,6 +2,9 @@
 /* editorial-ui · Cristian Pérez · cristianperez.me */
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  // editorial-ui rules 6 and 59: hover: and group-hover: compile under
+  // (hover: hover) and (pointer: fine), so a tap never leaves a sticky hover.
+  future: { hoverOnlyWhenSupported: true },
   theme: {
     extend: {
       screens: { xs: "400px" },

@@ -22,21 +22,6 @@ export const Reveal: React.FC<{
   </motion.div>
 );
 
-/** Section label: text font, sentence case, readable size, with the burst motif. */
-export const SectionLabel: React.FC<{ children: React.ReactNode; tone?: "ink" | "light" }> = ({
-  children,
-  tone = "ink",
-}) => (
-  <p
-    className={`inline-flex items-center gap-2 text-[15px] sm:text-base font-semibold mb-3 ${
-      tone === "light" ? "text-canvas/85" : "text-ink/85"
-    }`}
-  >
-    <BurstMark className="w-5 h-5" />
-    {children}
-  </p>
-);
-
 /** The brand motif: the comic "BOOM" burst from the logo. */
 export const BurstMark: React.FC<{
   className?: string;

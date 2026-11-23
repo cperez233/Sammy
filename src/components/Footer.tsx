@@ -40,7 +40,7 @@ export const Footer: React.FC = () => (
       {/* Closing call */}
       <div className="grid gap-10 lg:grid-cols-[1fr_auto] items-center pb-14 sm:pb-20 border-b border-canvas/15">
         <Reveal>
-          <h2 className="font-display font-extrabold text-[clamp(2.5rem,8vw,5rem)] leading-[0.98] tracking-[-0.035em]">
+          <h2 className="font-display font-extrabold text-[clamp(2.5rem,8vw,5rem)] leading-[1.04] tracking-[-0.035em]">
             <HeadingWords text="¿Hacemos" /> <HeadingWords text="BOOM" className="text-accent" delay={0.1} />
             <br />
             <HeadingWords text="en tu fiesta?" delay={0.2} />
@@ -72,7 +72,7 @@ export const Footer: React.FC = () => (
             Sammy <span className="text-accent">Partyboom</span>
           </p>
           <p className="mt-2 text-[15px] text-canvas/65 leading-relaxed max-w-[18rem]">
-            Animación, recreación y eventos infantiles. No hacemos fiestas, hacemos BOOM.
+            Animación, recreación y eventos infantiles en Bucaramanga y su área metropolitana.
           </p>
         </div>
         <div>

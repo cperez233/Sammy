@@ -1,86 +1,72 @@
-# Sammy Partyboom · Landing Web Mobile-First
+# Sammy Partyboom · landing para celular
 
 <!-- editorial-ui · (c) 2026 Cristian Pérez · https://cristianperez.me · MIT -->
 
-Página web desarrollada con la skill **editorial-ui** para **Sammy Partyboom**, negocio de animación, recreación y eventos infantiles en Bucaramanga y su área metropolitana (Santander, Colombia).
+Página de Sammy Partyboom, que anima fiestas infantiles en Bucaramanga, Floridablanca, Girón y Piedecuesta (Santander, Colombia). Se hizo con la skill editorial-ui.
 
----
+## 1. Para quién es
 
-## 1. Contexto del Proyecto
+Casi todos los clientes llegan desde Instagram ([@sammypartyboom](https://www.instagram.com/sammypartyboom/)) y desde el celular. Antes de escribir quieren ver tres cosas: cómo se ve una fiesta de verdad, cuánto cuesta y qué incluye cada plan, y cómo apartar la fecha. Las reservas se hacen solo por WhatsApp (mensajes, no llamadas) al 317 062 9434.
 
-Sammy Partyboom opera principalmente en Instagram ([@sammypartyboom](https://www.instagram.com/sammypartyboom/)), donde sus clientes llegan en su inmensa mayoría desde dispositivos móviles buscando:
-1. Conocer qué tipo de trabajo hacen (fotos y videos reales de eventos).
-2. Ver paquetes y condiciones con claridad (sin letra pequeña ni precios ocultos).
-3. Contactar y cotizar directamente por WhatsApp al número **316 8674729**.
+## 2. Dirección de arte
 
----
+El mundo es el de una fiesta infantil en un salón comunal o una casa de Bucaramanga: globos, confeti, rondas, papás aplaudiendo. El motivo es el estallido de cómic del logo (el "BOOM"), que aparece en el hero, en el camino del programa, en las preguntas, en el sello de precios y en el footer.
 
-## 2. Dirección de Arte y Decisiones de Diseño
+Colores (definidos en `tailwind.config.js`):
 
-Siguiendo la metodología de **editorial-ui** para evitar plantillas genéricas ("AI slop") o modas repetitivas:
+- Fondo crema `#FBF6EE`.
+- Tinta berenjena `#22142B`, con buen contraste para leer en pantalla.
+- Acento magenta `#E63956`, tomado del "BOOM" del logo, con amarillo `#FFC93C`, uva `#7B3FC4` y celeste `#5EC8F2` en detalles.
 
-* **Mundo:** Fiestas infantiles en salones comunales y casas de Bucaramanga; globos brillantes, serpentinas de papel crepé, rondas familiares, aplausos, algodón de azúcar y confeti festivo.
-* **Paleta:**
-  * Fondo: `#FAF7F2` (crema vainilla suave, cálido y festivo, evitando blancos hospitalarios y oscuros con neón).
-  * Tinta: `#211526` (mora berenjena profundo con excelente contraste y legibilidad).
-  * Acento: `#E63956` (magenta explosión "BOOM", tomado directamente de la onomatopeya del logo), acompañado de toques lavanda (`#E8DCF8`) y amarillo chispa (`#FFD166`).
-* **Tipografías:**
-  * Display: **Bricolage Grotesque** (peso bold/extrabold; geométrica, alegre y con trampas de tinta curvas que evocan globos y diversión sin caer en fuentes infantiles baratas).
-  * Texto: **Figtree** (limpia, redondeada, con altura de x generosa y excelente legibilidad en pantallas móviles a partir de 16px).
-* **Navegación:** **Bottom dock móvil** flotante tras el primer scroll (con accesos directos a Planes, Galería, Cotizador y botón primario de WhatsApp) + cabecera superior compacta con el logo y el indicador de Bucaramanga.
-* **Hero:** Titular seleccionado (**Opción 1: *"Menos fiestas aburridas, más momentos que hacen BOOM."***) con revelación palabra por palabra, más el motivo interactivo del **Globo "Boom"** (**Opción A**) que reacciona al toque con física de resorte y confeti festivo (`canvas-confetti`).
+Letras: Bricolage Grotesque para títulos (redondeada y alegre, sin verse como fuente infantil) y Figtree para el texto, legible desde 16 px. Las dos se sirven desde `public/fonts/`.
 
----
+Navegación: cabecera con logo y enlaces por sección en escritorio, y en el celular un dock abajo (Videos, Planes, Cotizar, FAQ y WhatsApp) que aparece después del hero.
 
-## 3. Estructura de Secciones y Contenido (rediseño)
+## 3. Secciones
 
-1. **Header:** logo circular limpio (recortado de la captura original), enlaces por sección con indicador activo en escritorio y botón directo a WhatsApp.
-2. **Hero:** titular *"Menos fiestas aburridas, más momentos que hacen BOOM."* con revelación por palabra, video real de una fiesta en un marco con capas, tarjeta de precio ($200.000 · 3 horas) superpuesta y el globo "Boom" interactivo.
-3. **Franja animada:** servicios en movimiento (38 px/s) con el estallido de cómic del logo como separador.
-4. **Fiestas reales:** carrusel de 6 clips de video reales (silenciados, en bucle, solo se reproducen cuando están en pantalla) + foto de personajes + puerta a Instagram.
-5. **Cómo son las 3 horas:** programa de la fiesta en 6 pasos con un camino punteado que se dibuja con el scroll.
-6. **Planes y precios:** selector de planes + tarjeta tipo boleta con el precio; adicionales en lista y puerta abierta "¿Otra cosa? Cuéntanos".
-7. **Cotizador:** formulario (plan, fecha, municipio, niños, cumpleañero) con vista previa en un celular con WhatsApp.
-8. **Preguntas frecuentes** y **footer** con cierre "¿Hacemos BOOM en tu fiesta?".
+1. Hero: "Menos fiestas aburridas, más momentos que hacen BOOM." con las palabras subiendo una a una, un video real en un marco con capas, la tarjeta de precio ($200.000 por 3 horas) encima y un globo que revienta con confeti al tocarlo.
+2. Dos cintas en movimiento (36 px/s): servicios en una dirección y municipios en la otra.
+3. Manifiesto con scroll: "Fiestas aburridas" se tacha, la página se pone de noche y aparece "Hacemos BOOM".
+4. Videos: siete fiestas reales en polaroids (seis clips y una foto de personajes) que se abren en grande, y una tarjeta hacia Instagram.
+5. Programa de las 3 horas en seis pasos, con un camino punteado que se dibuja al bajar.
+6. Planes y precios: selector de planes, boleta con el precio, adicionales y un "¿Otra cosa? Cuéntanos".
+7. Cotizador: plan, fecha, municipio, número de niños y cumpleañero, con el mensaje de WhatsApp a la vista antes de enviarlo.
+8. Preguntas frecuentes y footer con "¿Hacemos BOOM en tu fiesta?".
 
-Recursos: los clips están en `public/media/` (MP4 + WebM de respaldo, ~7 MB en total, carga diferida), las fuentes Bricolage Grotesque y Figtree se sirven desde `public/fonts/`.
+Los videos están en `public/media/` (MP4 y WebM de respaldo, unos 7 MB en total) y cargan solo cuando se acercan a la pantalla.
 
-## 4. Calidad, Accesibilidad y Rendimiento
+## 4. Calidad y accesibilidad
 
-* **Medición móvil verificada:** 0 desbordamientos horizontales (`overflow-x: clip`), largo total en móviles de 10.6 pantallas (dentro del estándar para lectura ágil).
-* **Tamaños mínimos de texto:** Etiquetas y notas a partir de 13px / 13.5px; cuerpo de texto a 16px.
-* **Blancos táctiles seguros:** Todos los enlaces, botones y pestañas cumplen con un área mínima táctil de 44x44px.
-* **Reducción de movimiento (`prefers-reduced-motion`):** Integrado a nivel global mediante `<MotionConfig reducedMotion="user">` y reglas CSS que pausan bucles si el usuario tiene activada la preferencia de accesibilidad.
-* **Optimización de bucles fuera de pantalla (Regla 16):** `IntersectionObserver` activo para pausar animaciones infinitas cuando no son visibles en el viewport.
+- Sin scroll horizontal en ningún ancho (`overflow-x: clip` en la raíz).
+- Texto de lectura a 16 px o más; etiquetas y notas a 13 px como mínimo.
+- Botones y enlaces con área táctil de al menos 44 × 44 px.
+- Con `prefers-reduced-motion` activo, `<MotionConfig reducedMotion="user">` quita el movimiento, el manifiesto se muestra en su cuadro final y los bucles de CSS se detienen.
+- Los bucles se pausan cuando su sección sale de la pantalla (`IntersectionObserver`).
+- Los efectos de hover solo se activan con mouse o trackpad (`hoverOnlyWhenSupported`), así un toque en el celular no deja estados pegados.
 
----
+## 5. Cómo correrlo
 
-## 5. Instrucciones para Correr el Proyecto
+Requisitos: Node.js 18 o más reciente (20 o 22 recomendados) y npm 9 o más.
 
-### Requisitos
-* Node.js 18+ (recomendado Node 20 o 22)
-* npm 9+
-
-### Instalación
 ```bash
 npm install
-```
-
-### Ejecutar en Desarrollo
-```bash
 npm run dev
 ```
-Abre en tu navegador la URL local indicada (usualmente `http://localhost:5173`).
 
-### Compilar para Producción
+Abre la URL local que aparece en la terminal (normalmente `http://localhost:5173`).
+
+Para producción:
+
 ```bash
 SITE_URL=https://tu-dominio.com npm run build
 ```
-Genera `dist/` con la página prerenderizada (el contenido va en el HTML para Google y buscadores con IA), `robots.txt`, `sitemap.xml`, `llms.txt` y `404.html`. Sin `SITE_URL` usa un dominio de relleno (`sammypartyboom.example`) que hay que cambiar antes de publicar; en Vercel se toma solo de `VERCEL_PROJECT_PRODUCTION_URL`.
 
-### Probar la Versión de Producción
+Esto genera `dist/` con la página prerenderizada (el contenido va en el HTML para que lo lean Google y los buscadores con IA), además de `robots.txt`, `sitemap.xml`, `llms.txt` y `404.html`. Sin `SITE_URL` se usa el dominio de relleno `sammypartyboom.example`, que hay que cambiar antes de publicar; en Vercel se toma de `VERCEL_PROJECT_PRODUCTION_URL`.
+
+Para revisar la versión compilada:
+
 ```bash
 npm run preview
 ```
-Inicia el servidor local de vista previa en `http://localhost:4173`.
-# Sammy
+
+Queda en `http://localhost:4173`.

@@ -2,7 +2,7 @@
 import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { CheckCheck, Send } from "lucide-react";
-import { Reveal, SectionLabel, HeadingWords } from "./Reveal";
+import { Reveal, HeadingWords } from "./Reveal";
 import { WhatsAppIcon } from "./WhatsAppIcon";
 import { PACKAGES } from "./Packages";
 import { PHONE_DISPLAY, springSnappy, waLink } from "../lib/site";
@@ -50,8 +50,7 @@ export const WhatsAppComposer: React.FC = () => {
       <div className="relative max-w-6xl mx-auto grid gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16 items-center">
         <div>
           <Reveal>
-            <SectionLabel tone="light">Cotiza en un minuto</SectionLabel>
-            <h2 className="font-display font-extrabold text-[clamp(2.2rem,6vw,3.8rem)] leading-[1.02] tracking-[-0.03em]">
+            <h2 className="font-display font-extrabold text-[clamp(2.2rem,6vw,3.8rem)] leading-[1.06] tracking-[-0.03em]">
               <HeadingWords text="Arma tu mensaje y envíalo por WhatsApp" />
             </h2>
             <p className="mt-4 text-[17px] text-canvas/75 leading-relaxed max-w-[34rem]">
@@ -182,12 +181,12 @@ export const WhatsAppComposer: React.FC = () => {
                 </motion.div>
               </div>
 
-              <div className="p-3 bg-wa-chat">
+              <motion.div whileHover="lift" className="p-3 bg-wa-chat">
                 <motion.a
                   href={waLink(message)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  whileHover={{ y: -2 }}
+                  variants={{ lift: { y: -2 } }}
                   whileTap={{ scale: 0.97 }}
                   transition={springSnappy}
                   className="flex items-center justify-center gap-2 h-14 rounded-full bg-wa text-white font-display font-bold text-[17px] hover:bg-[#1FB959] transition-colors"
@@ -196,7 +195,7 @@ export const WhatsAppComposer: React.FC = () => {
                   Enviar por WhatsApp
                   <Send className="w-[18px] h-[18px]" aria-hidden="true" />
                 </motion.a>
-              </div>
+              </motion.div>
             </div>
           </div>
           <p className="mt-5 text-center text-[14px] text-canvas/65">
