@@ -101,12 +101,7 @@ export const Footer: React.FC = () => (
       </div>
 
       <div className="pt-6 border-t border-canvas/15 flex flex-col sm:flex-row items-center justify-between gap-2 text-[13px] text-canvas/50">
-        <p>
-          © 2026 Sammy Partyboom ·{" "}
-          <a href="/privacidad" className="inline-block py-3 underline decoration-canvas/25 underline-offset-2 hover:text-canvas transition-colors">
-            Política de datos
-          </a>
-        </p>
+        <p>© 2026 Sammy Partyboom</p>
         <p className="footer-credit">
           Hecho con confeti por{" "}
           <a

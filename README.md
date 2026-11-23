@@ -50,7 +50,6 @@ Los videos están en `public/media/` (MP4 y WebM de respaldo, unos 7 MB en total
 ## 5. Antes de publicar
 
 - **Dominio.** El build toma el dominio de `SITE_URL` o, en Vercel, de `VERCEL_PROJECT_PRODUCTION_URL`. Si no encuentra ninguno usa `sammypartyboom.example` y lo avisa en amarillo en la terminal.
-- **Política de datos.** `/privacidad` se genera en `scripts/prerender.mjs`. Antes de lanzar hay que completar lo que está en amarillo: nombre o razón social con C.C. o NIT, un correo y el plazo de conservación.
 - **Testimonios.** Van en `src/data/testimonials.ts`, copiados tal cual de mensajes reales. Solo aparecen los que tengan `approved: true`, y la sección no se muestra mientras no haya ninguno.
 - **Cabeceras de seguridad.** Están en `vercel.json`. La CSP permite el script de respaldo de `index.html` por su hash; si se cambia ese script, hay que recalcular el hash.
 

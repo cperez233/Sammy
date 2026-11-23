@@ -201,10 +201,7 @@ export const WhatsAppComposer: React.FC = () => {
           </div>
           <p className="mt-5 text-center text-[14px] leading-relaxed text-canvas/75">
             Se abre WhatsApp con el mensaje listo y nada se envía sin que lo confirmes.
-            Usamos estos datos solo para tu cotización.{" "}
-            <a href="/privacidad" className="inline-block py-3 underline underline-offset-2 decoration-canvas/40 hover:text-canvas">
-              Política de datos
-            </a>
+            Usamos estos datos solo para tu cotización.
           </p>
           </div>
         </Reveal>
