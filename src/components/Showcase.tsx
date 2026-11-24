@@ -2,7 +2,8 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
 import { ArrowLeft, ArrowRight, ArrowUpRight, Maximize2, X } from "lucide-react";
-import { LoopVideo } from "./LoopVideo";
+import { FadeImg, LoopVideo } from "./LoopVideo";
+import { LQIP } from "../lib/lqip";
 import { Reveal, BurstMark, HeadingWords } from "./Reveal";
 import { CtaButton } from "./CtaButton";
 import { WhatsAppIcon } from "./WhatsAppIcon";
@@ -57,7 +58,8 @@ const Column: React.FC<{ speed: number; children: React.ReactNode }> = ({ speed,
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [speed, -speed]);
   return (
-    <motion.div ref={ref} style={{ y }} className="flex-1 min-w-0 flex flex-col">
+    // Own compositor layer: the column glides without repainting its shadows and clips every frame
+    <motion.div ref={ref} style={{ y }} className="flex-1 min-w-0 flex flex-col will-change-transform">
       {children}
     </motion.div>
   );
@@ -67,11 +69,15 @@ const Media: React.FC<{ item: Item; className?: string; eager?: boolean }> = ({ 
   item.kind === "video" ? (
     <LoopVideo src={item.src} poster={item.poster!} label={`Video real: ${item.title}`} eager={eager} className={className} />
   ) : (
-    <div className={`relative overflow-hidden ${className}`}>
-      <img
+    <div
+      style={LQIP[item.src] ? { backgroundImage: `url(${LQIP[item.src]})` } : undefined}
+      className={`relative overflow-hidden bg-cover bg-center ${className}`}
+    >
+      <FadeImg
         src={item.src}
         alt={`Foto real: ${item.title}`}
-        loading="lazy"
+        loading={eager ? "eager" : "lazy"}
+        decoding="async"
         width={960}
         height={1280}
         className="absolute inset-0 w-full h-full object-cover"
@@ -149,7 +155,7 @@ const Lightbox: React.FC<{ index: number; dir: number; onClose: () => void; onGo
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
-      className="fixed inset-0 z-[90] bg-ink/95 backdrop-blur-sm flex flex-col"
+      className="fixed inset-0 z-[90] bg-ink/95 flex flex-col"
       onClick={onClose}
     >
       <div className="flex items-center justify-between px-4 sm:px-8 pt-4 sm:pt-6 text-canvas" onClick={(e) => e.stopPropagation()}>

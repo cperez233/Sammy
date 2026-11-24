@@ -26,7 +26,8 @@ export const HowItGoes: React.FC = () => {
 
   const clipX = useTransform(p, (v) => `inset(0 ${100 - v * 100}% 0 0)`);
   const clipY = useTransform(p, (v) => `inset(0 0 ${100 - v * 100}% 0)`);
-  const left = useTransform(p, (v) => `${v * 100}%`);
+  // The burst travels with transforms only (rule 7): a full-size rail is translated by its own width
+  const along = useTransform(p, (v) => `${v * 100}%`);
   const rotate = useTransform(p, [0, 1], [0, 720]);
 
   return (
@@ -50,16 +51,20 @@ export const HowItGoes: React.FC = () => {
           <div aria-hidden="true" className="hidden lg:block absolute left-[22px] right-[calc((100%-100px)/6-22px)] top-[22px] h-[3px]">
             <div className="absolute inset-0 border-t-[3px] border-dashed border-ink/15" />
             <motion.div style={{ clipPath: clipX }} className="absolute inset-0 border-t-[3px] border-dashed border-accent" />
-            <motion.div style={{ left, rotate }} className="absolute -top-[26px] -ml-[26px] w-[52px] h-[52px] z-10 drop-shadow-[0_6px_8px_rgba(60,20,70,.35)]">
-              <BurstMark className="w-full h-full" fill="#E63956" />
+            <motion.div style={{ x: along }} className="absolute inset-0 z-10 will-change-transform">
+              <motion.div style={{ rotate }} className="absolute left-0 -top-[26px] -ml-[26px] w-[52px] h-[52px]">
+                <BurstMark className="w-full h-full" fill="#D42F4B" />
+              </motion.div>
             </motion.div>
           </div>
           {/* Phone track */}
           <div aria-hidden="true" className="lg:hidden absolute left-[21px] top-2 bottom-16 w-[3px]">
             <div className="absolute inset-0 border-l-[3px] border-dashed border-ink/15" />
             <motion.div style={{ clipPath: clipY }} className="absolute inset-0 border-l-[3px] border-dashed border-accent" />
-            <motion.div style={{ top: left, rotate }} className="absolute -left-[21px] -mt-[22px] w-[44px] h-[44px] z-10">
-              <BurstMark className="w-full h-full" fill="#E63956" />
+            <motion.div style={{ y: along }} className="absolute inset-0 z-10 will-change-transform">
+              <motion.div style={{ rotate }} className="absolute top-0 -left-[21px] -mt-[22px] w-[44px] h-[44px]">
+                <BurstMark className="w-full h-full" fill="#D42F4B" />
+              </motion.div>
             </motion.div>
           </div>
 

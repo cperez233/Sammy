@@ -67,7 +67,8 @@ export const Statement: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reduced]);
 
-  const bg = useTransform(p, [0.4, 0.54], ["#FBF6EE", "#22142B"]);
+  // Night falls as an ink layer fading in (composited), not a full-screen background-color repaint
+  const night = useTransform(p, [0.4, 0.54], [0, 1]);
   const line1Color = useTransform(p, [0.4, 0.54], ["#22142B", "rgba(251,246,238,0.42)"]);
   const line1Scale = useTransform(p, [0.42, 0.6], [1, 0.5]);
   const line1Y = useTransform(p, [0.42, 0.6], ["0vh", "-20vh"]);
@@ -117,7 +118,8 @@ export const Statement: React.FC = () => {
       aria-label="Nuestra forma de hacer fiestas"
       className="relative h-[170vh]"
     >
-      <motion.div style={{ backgroundColor: bg }} className="sticky top-0 h-[100svh] overflow-hidden">
+      <div className="sticky top-0 h-[100svh] overflow-hidden bg-canvas">
+        <motion.div aria-hidden="true" style={{ opacity: night }} className="absolute inset-0 bg-ink will-change-[opacity]" />
         <motion.div aria-hidden="true" style={{ opacity: dots }} className="absolute inset-0 confetti-field" />
 
         <div className="relative h-full max-w-6xl mx-auto px-4 sm:px-6 flex flex-col justify-center">
@@ -199,7 +201,7 @@ export const Statement: React.FC = () => {
             </span>
           </motion.a>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 };

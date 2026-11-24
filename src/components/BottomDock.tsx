@@ -39,14 +39,15 @@ export const BottomDock: React.FC = () => {
       setVisible(window.scrollY > window.innerHeight * 0.6 && !nearFooter);
 
       if (locked.current) return;
-      // Active link = the last section whose top has passed the viewport midline.
+      // Active link = the last dock section whose top has passed the viewport midline.
+      // Sections without a dock button (the party program) keep the previous one lit.
       const mid = window.innerHeight * 0.5;
       let current: string | null = null;
-      document.querySelectorAll<HTMLElement>("main > section[id]").forEach((s) => {
-        const r = s.getBoundingClientRect();
-        if (r.top <= mid) current = `#${s.id}`;
-      });
-      setActive(LINKS.some((l) => l.href === current) ? current : null);
+      for (const l of LINKS) {
+        const s = document.querySelector<HTMLElement>(l.href);
+        if (s && s.getBoundingClientRect().top <= mid) current = l.href;
+      }
+      setActive(current);
     };
     const onScroll = () => {
       if (locked.current) {

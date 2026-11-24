@@ -149,11 +149,11 @@ export const Hero: React.FC = () => {
       {/* Ambient halo */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -z-10 right-[-25%] top-[16%] w-[90vw] max-w-[820px] aspect-square rounded-full bg-uva-light blur-3xl opacity-90 lg:right-[-8%] lg:top-[2%]"
+        className="pointer-events-none absolute -z-10 right-[-25%] top-[16%] w-[90vw] max-w-[820px] aspect-square rounded-full bg-[radial-gradient(closest-side,#EEE3FB_0%,#EEE3FB_45%,rgba(238,227,251,0)_100%)] lg:right-[-8%] lg:top-[2%]"
       />
 
       <motion.div
-        style={{ scale: recedeScale, opacity: recedeOpacity }}
+        style={{ scale: recedeScale, opacity: recedeOpacity, willChange: "transform, opacity" }}
         className="origin-top max-w-6xl mx-auto grid gap-y-10 lg:gap-x-14 lg:grid-cols-[1.35fr_1fr] [grid-template-areas:'text''media''actions'] lg:[grid-template-areas:'text_media''actions_media']"
       >
         {/* Text */}

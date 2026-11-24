@@ -35,7 +35,7 @@ El estallido hace algo distinto en cada lugar: viaja en la punta de la serpentin
 7. Cotizador: plan, fecha, municipio, número de niños y cumpleañero, con el mensaje de WhatsApp a la vista antes de enviarlo.
 8. Preguntas frecuentes y footer con "¿Hacemos BOOM en tu fiesta?".
 
-Los videos están en `public/media/` (MP4 y WebM de respaldo, unos 7 MB en total) y cargan solo cuando se acercan a la pantalla.
+Los videos están en `public/media/` (MP4 y WebM de respaldo, unos 7 MB en total) y cargan solo cuando se acercan a la pantalla. Si se cambia un póster o una foto de la galería, hay que regenerar su vista previa en `src/lib/lqip.ts`.
 
 ## 4. Calidad y accesibilidad
 
@@ -44,6 +44,8 @@ Los videos están en `public/media/` (MP4 y WebM de respaldo, unos 7 MB en total
 - Botones y enlaces con área táctil de al menos 44 × 44 px.
 - Con `prefers-reduced-motion` activo, `<MotionConfig reducedMotion="user">` quita el movimiento, el manifiesto se muestra en su cuadro final y los bucles de CSS se detienen.
 - Los bucles se pausan cuando su sección sale de la pantalla (`IntersectionObserver`).
+- Videos y fotos nunca se ven como un recuadro vacío: debajo llevan una versión diminuta y difuminada (`src/lib/lqip.ts`), encima aparece el póster con un fundido y el video solo se muestra cuando ya está reproduciendo. Cada clip empieza a descargarse una pantalla antes de llegar.
+- Solo se reproducen los videos más visibles (2 en el celular, 3 en el computador); los demás esperan en su cuadro. El video del hero y el del visor tienen prioridad.
 - Los efectos de hover solo se activan con mouse o trackpad (`hoverOnlyWhenSupported`), así un toque en el celular no deja estados pegados.
 - Cada efecto de hover tiene su versión táctil en el celular: el barrido de luz de los botones y el de los adicionales se activan al aparecer en pantalla.
 
